@@ -452,7 +452,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                         <tr key={component.itemNumber} className="hover:bg-gray-50 transition-colors cursor-pointer">
                           <td className="px-4 py-3 text-sm font-medium text-gray-900">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.itemNumber}
@@ -460,7 +460,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-mono">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.mpdReference}
@@ -468,7 +468,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3 text-sm font-medium text-gray-900">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.nomenclature}
@@ -476,7 +476,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-mono">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.partNumber}
@@ -484,7 +484,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-mono">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.serialNumber}
@@ -492,7 +492,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-semibold">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.position}
@@ -500,7 +500,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               <Badge variant="outline" className={getAssigneeColor(component.assignee)}>
@@ -510,7 +510,7 @@ export default function ComponentsPage({ params }: { params: Promise<{ subId: st
                           </td>
                           <td className="px-4 py-3">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               <Badge variant="outline" className={getStatusColor(component.status)}>
