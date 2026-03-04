@@ -429,51 +429,53 @@ export default function F1EngineRecordsPage() {
                   )}
                 </div>
 
-                {/* Date & Duration */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200">
-                    <Calendar className="h-5 w-5 text-slate-400" />
-                    <div>
-                      <p className="text-xs text-slate-500">Date</p>
-                      <p className="font-semibold text-slate-900">{selectedEventData.date}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200">
-                    <Clock className="h-5 w-5 text-slate-400" />
-                    <div>
-                      <p className="text-xs text-slate-500">Status</p>
-                      <p className={`font-semibold ${
-                        effectiveSelectedEvent.status === "verified" 
-                          ? "text-emerald-600" 
-                          : effectiveSelectedEvent.status === "flagged"
-                            ? "text-red-600"
-                            : "text-amber-600"
-                      }`}>
-                        {effectiveSelectedEvent.statusLabel}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Parties Involved */}
-                {selectedEventData.parties && selectedEventData.parties.length > 0 && (
-                  <Card className="mb-6">
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Users className="h-4 w-4 text-slate-500" />
-                        <h3 className="font-semibold text-slate-700">Parties Involved</h3>
+                {/* Date, Status & Parties */}
+                <Card className="mb-6">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-6 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-slate-400" />
+                        <div>
+                          <p className="text-xs text-slate-500">Date</p>
+                          <p className="font-semibold text-slate-900">{selectedEventData.date}</p>
+                        </div>
                       </div>
-                      <div className="space-y-3">
-                        {selectedEventData.parties.map((party, idx) => (
-                          <div key={idx} className="flex justify-between items-center py-2 border-b border-slate-100 last:border-0">
-                            <span className="font-medium text-slate-900">{party.name}</span>
-                            <span className="text-sm text-slate-500">{party.role}</span>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-slate-400" />
+                        <div>
+                          <p className="text-xs text-slate-500">Status</p>
+                          <p className={`font-semibold ${
+                            effectiveSelectedEvent.status === "verified" 
+                              ? "text-emerald-600" 
+                              : effectiveSelectedEvent.status === "flagged"
+                                ? "text-red-600"
+                                : "text-amber-600"
+                          }`}>
+                            {effectiveSelectedEvent.statusLabel}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {selectedEventData.parties && selectedEventData.parties.length > 0 && (
+                      <>
+                        <div className="border-t border-slate-100 pt-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Users className="h-4 w-4 text-slate-500" />
+                            <span className="text-sm font-medium text-slate-600">Parties Involved</span>
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                          <div className="flex flex-wrap gap-x-6 gap-y-1">
+                            {selectedEventData.parties.map((party, idx) => (
+                              <div key={idx} className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-slate-900">{party.name}</span>
+                                <span className="text-xs text-slate-400">({party.role})</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
 
                 {/* Key Data Summary */}
                 <Card className="mb-6">
