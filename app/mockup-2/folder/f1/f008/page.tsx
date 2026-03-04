@@ -790,14 +790,22 @@ export default function F1EngineRecordsPage() {
                 <div className="bg-slate-100 px-4 py-2 border-b border-slate-200">
                   <span className="text-sm font-medium text-slate-700">Document Preview</span>
                 </div>
-                <div className="bg-white p-4 h-48 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-28 h-36 mx-auto bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center mb-3">
-                      <FileText className="h-10 w-10 text-slate-400" />
+                <div className="bg-white p-4 h-64 flex items-center justify-center">
+                  {pendingReviewDialog.event.imagePreview ? (
+                    <img 
+                      src={pendingReviewDialog.event.imagePreview} 
+                      alt={pendingReviewDialog.event.title}
+                      className="max-h-full max-w-full object-contain rounded border border-slate-200"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <div className="w-28 h-36 mx-auto bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center mb-3">
+                        <FileText className="h-10 w-10 text-slate-400" />
+                      </div>
+                      <p className="text-sm text-slate-600">{pendingReviewDialog.event.title}</p>
+                      <p className="text-xs text-slate-400 mt-1">{pendingReviewDialog.event.date}</p>
                     </div>
-                    <p className="text-sm text-slate-600">{pendingReviewDialog.event.title}</p>
-                    <p className="text-xs text-slate-400 mt-1">{pendingReviewDialog.event.date}</p>
-                  </div>
+                  )}
                 </div>
               </div>
 
