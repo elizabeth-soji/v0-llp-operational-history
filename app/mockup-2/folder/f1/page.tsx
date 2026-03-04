@@ -124,6 +124,10 @@ export default function FolderF1Page() {
     open: boolean
     llp: typeof llpData[0] | null
   }>({ open: false, llp: null })
+  const [pdfDialog, setPdfDialog] = useState<{
+    open: boolean
+    llp: typeof llpData[0] | null
+  }>({ open: false, llp: null })
 
   // Get the effective status (from state or original data)
   const getEffectiveStatus = (llp: typeof llpData[0]) => {
@@ -146,6 +150,13 @@ export default function FolderF1Page() {
     e.preventDefault()
     e.stopPropagation()
     setReviewDialog({ open: true, llp })
+  }
+
+  // Open PDF preview dialog
+  const openPdfDialog = (llp: typeof llpData[0], e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setPdfDialog({ open: true, llp })
   }
 
   const folderInfo = {
@@ -424,14 +435,35 @@ export default function FolderF1Page() {
                             </td>
                             <td className="py-4 px-4">
                               {isPending ? (
-                                <button
-                                  onClick={(e) => openReviewDialog(llp, e)}
-                                  className="group"
-                                >
-                                  <Badge className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200 cursor-pointer transition-colors">
+                                <div className="flex items-center gap-2">
+                                  <Badge className="bg-amber-100 text-amber-700 border-amber-200">
                                     Pending Review
                                   </Badge>
-                                </button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={(e) => openReviewDialog(llp, e)}
+                                    className="h-7 px-2 text-xs text-amber-700 border-amber-300 hover:bg-amber-50"
+                                  >
+                                    <CheckCircle2 className="h-3 w-3 mr-1" />
+                                    Verify
+                                  </Button>
+                                </div>
+                              ) : effectiveStatus === "Completed" ? (
+                                <div className="flex items-center gap-2">
+                                  <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
+                                    Completed
+                                  </Badge>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={(e) => openPdfDialog(llp, e)}
+                                    className="h-7 px-2 text-xs text-slate-600 border-slate-300 hover:bg-slate-50"
+                                  >
+                                    <Eye className="h-3 w-3 mr-1" />
+                                    View PDF
+                                  </Button>
+                                </div>
                               ) : (
                                 <Link href={llp.link} className="block">
                                   {getStatusBadge(effectiveStatus)}
@@ -528,6 +560,86 @@ export default function FolderF1Page() {
             <Button onClick={handleMarkAsVerified} className="bg-emerald-600 hover:bg-emerald-700">
               <CheckCircle2 className="h-4 w-4 mr-2" />
               Mark as Verified
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* PDF Preview Dialog */}
+      <Dialog open={pdfDialog.open} onOpenChange={(open) => !open && setPdfDialog({ open: false, llp: null })}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-emerald-500" />
+              Document Preview
+            </DialogTitle>
+            {pdfDialog.llp && (
+              <DialogDescription>
+                {pdfDialog.llp.nomenclature} - {pdfDialog.llp.partNumber}
+              </DialogDescription>
+            )}
+          </DialogHeader>
+          
+          {pdfDialog.llp && (
+            <div className="py-2">
+              {/* Part Information Header */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-4">
+                <div className="grid grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <p className="text-xs text-slate-500">Part Number</p>
+                    <p className="font-mono font-semibold text-slate-900">{pdfDialog.llp.partNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Serial Number</p>
+                    <p className="font-mono font-semibold text-slate-900">{pdfDialog.llp.serialNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Position</p>
+                    <p className="font-semibold text-slate-900">{pdfDialog.llp.position}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Status</p>
+                    <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">Verified</Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* PDF Preview Area */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-800">
+                <div className="bg-slate-900 px-4 py-2 border-b border-slate-700 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-300">Birth Record - Engine Data Submittal.pdf</span>
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="h-[50vh] flex items-center justify-center bg-slate-100">
+                  <div className="text-center p-8">
+                    <div className="w-48 h-64 mx-auto bg-white rounded-lg shadow-lg border border-slate-200 flex flex-col items-center justify-center mb-4">
+                      <FileText className="h-16 w-16 text-slate-300 mb-4" />
+                      <div className="w-32 h-2 bg-slate-200 rounded mb-2"></div>
+                      <div className="w-24 h-2 bg-slate-200 rounded mb-2"></div>
+                      <div className="w-28 h-2 bg-slate-200 rounded mb-4"></div>
+                      <div className="w-20 h-2 bg-slate-200 rounded"></div>
+                    </div>
+                    <p className="text-sm text-slate-600">Engine Data Submittal</p>
+                    <p className="text-xs text-slate-400 mt-1">CFM International - Birth Record</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Link href={pdfDialog.llp?.link || "#"}>
+              <Button variant="outline" className="gap-2">
+                <Eye className="h-4 w-4" />
+                View Full Timeline
+              </Button>
+            </Link>
+            <Button onClick={() => setPdfDialog({ open: false, llp: null })}>
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>
