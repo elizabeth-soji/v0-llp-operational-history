@@ -33,6 +33,7 @@ const timelineEvents = [
     id: "operational-history",
     title: "Operational History – ON / OFF Log",
     date: "2 Feb 2022",
+    category: "Maintenance",
     dotColor: "bg-emerald-500",
     description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation.",
     documents: 1,
@@ -76,6 +77,7 @@ const timelineEvents = [
     id: "authorized-release",
     title: "Authorized Release Certificate (FAA 8130-3)",
     date: "13 Nov 2020",
+    category: "Maintenance",
     dotColor: "bg-emerald-500",
     description: "Airworthiness release certificate confirming the LLP has been inspected and is approved for return to service.",
     documents: 1,
@@ -101,6 +103,7 @@ const timelineEvents = [
     id: "llp-status",
     title: "LLP Status Report (at Removal)",
     date: "21 Jun 2020",
+    category: "Operations",
     dotColor: "bg-red-500",
     description: "Life Limited Part status and remaining life calculation at the time of removal from engine. Data discrepancy detected in part/serial numbers.",
     documents: 1,
@@ -128,6 +131,7 @@ const timelineEvents = [
     id: "incident-clearance",
     title: "Incident / Accident Clearance Statement",
     date: "24 May 2020",
+    category: "Operations",
     dotColor: "bg-emerald-500",
     description: "Certification that the engine and all installed parts have no incident or accident history during the period from manufacture to removal.",
     documents: 1,
@@ -152,6 +156,7 @@ const timelineEvents = [
     id: "birth-record",
     title: "Engine Data Submittal (Birth Record)",
     date: "14 Feb 2019",
+    category: "Birth/Manufacturing",
     dotColor: "bg-amber-500",
     description: "Original manufacturing and certification documentation. Part manufactured by CFM International with full material traceability.",
     documents: 1,
@@ -418,7 +423,11 @@ export default function F1EngineRecordsPage() {
                             {effectiveEvent.statusLabel}
                           </Badge>
                         </div>
-                        <p className="text-sm text-slate-500 mb-1">{event.date}</p>
+                        <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
+                          <span>{event.date}</span>
+                          <span className="text-slate-300">|</span>
+                          <span className="text-slate-600 font-medium">{event.category}</span>
+                        </div>
                         <p className="text-sm text-slate-600 line-clamp-2">{event.description}</p>
                         <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
                           <FileText className="h-3 w-3" />
