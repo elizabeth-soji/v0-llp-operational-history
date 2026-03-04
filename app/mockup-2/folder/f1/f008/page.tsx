@@ -194,11 +194,20 @@ function CrossCheckStatus({ status }: { status: "match" | "warning" | "missing" 
 export default function F1EngineRecordsPage() {
   const [selectedEvent, setSelectedEvent] = useState<string>("operational-history")
   const [resolvedDiscrepancies, setResolvedDiscrepancies] = useState<Record<string, string[]>>({})
+  const [verifiedPendingEvents, setVerifiedPendingEvents] = useState<string[]>([])
   const [discrepancyDialog, setDiscrepancyDialog] = useState<{
     open: boolean
     eventId: string
     field: { label: string; value: string } | null
   }>({ open: false, eventId: "", field: null })
+  const [pendingReviewDialog, setPendingReviewDialog] = useState<{
+    open: boolean
+    event: typeof timelineEvents[0] | null
+  }>({ open: false, event: null })
+  const [pdfPreviewDialog, setPdfPreviewDialog] = useState<{
+    open: boolean
+    event: typeof timelineEvents[0] | null
+  }>({ open: false, event: null })
   
   const selectedEventData = timelineEvents.find(e => e.id === selectedEvent)
   
@@ -210,8 +219,18 @@ export default function F1EngineRecordsPage() {
     return resolvedDiscrepancies[eventId]?.includes(label) || false
   }
 
-  // Get the effective status of an event (considering resolved discrepancies)
+  // Get the effective status of an event (considering resolved discrepancies and verified pending)
   const getEffectiveEventStatus = (event: typeof timelineEvents[0]) => {
+    // Check if pending event was manually verified
+    if (event.status === "pending" && verifiedPendingEvents.includes(event.id)) {
+      return {
+        ...event,
+        status: "verified" as const,
+        statusLabel: "Verified",
+        dotColor: "bg-emerald-500"
+      }
+    }
+    
     if (event.status !== "flagged") return event
     
     const discrepancyFields = event.keyData.filter(k => k.status === "discrepancy")
@@ -250,6 +269,24 @@ export default function F1EngineRecordsPage() {
   // Open discrepancy dialog
   const openDiscrepancyDialog = (eventId: string, field: { label: string; value: string }) => {
     setDiscrepancyDialog({ open: true, eventId, field })
+  }
+
+  // Handle verifying a pending event
+  const handleVerifyPending = () => {
+    if (pendingReviewDialog.event) {
+      setVerifiedPendingEvents(prev => [...prev, pendingReviewDialog.event!.id])
+      setPendingReviewDialog({ open: false, event: null })
+    }
+  }
+
+  // Open pending review dialog
+  const openPendingReviewDialog = (event: typeof timelineEvents[0]) => {
+    setPendingReviewDialog({ open: true, event })
+  }
+
+  // Open PDF preview dialog
+  const openPdfPreviewDialog = (event: typeof timelineEvents[0]) => {
+    setPdfPreviewDialog({ open: true, event })
   }
 
   return (
@@ -444,15 +481,39 @@ export default function F1EngineRecordsPage() {
                         <Clock className="h-4 w-4 text-slate-400" />
                         <div>
                           <p className="text-xs text-slate-500">Status</p>
-                          <p className={`font-semibold ${
-                            effectiveSelectedEvent.status === "verified" 
-                              ? "text-emerald-600" 
-                              : effectiveSelectedEvent.status === "flagged"
-                                ? "text-red-600"
-                                : "text-amber-600"
-                          }`}>
-                            {effectiveSelectedEvent.statusLabel}
-                          </p>
+                          <div className="flex items-center gap-2">
+                            <p className={`font-semibold ${
+                              effectiveSelectedEvent.status === "verified" 
+                                ? "text-emerald-600" 
+                                : effectiveSelectedEvent.status === "flagged"
+                                  ? "text-red-600"
+                                  : "text-amber-600"
+                            }`}>
+                              {effectiveSelectedEvent.statusLabel}
+                            </p>
+                            {effectiveSelectedEvent.status === "pending" && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openPendingReviewDialog(selectedEventData)}
+                                className="h-6 px-2 text-xs text-amber-700 border-amber-300 hover:bg-amber-50"
+                              >
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                                Verify
+                              </Button>
+                            )}
+                            {effectiveSelectedEvent.status === "verified" && selectedEventData.viewerLink && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openPdfPreviewDialog(selectedEventData)}
+                                className="h-6 px-2 text-xs text-slate-600 border-slate-300 hover:bg-slate-50"
+                              >
+                                <Eye className="h-3 w-3 mr-1" />
+                                View PDF
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -681,6 +742,155 @@ export default function F1EngineRecordsPage() {
             <Button onClick={handleResolveDiscrepancy} className="bg-emerald-600 hover:bg-emerald-700">
               <CheckCircle2 className="h-4 w-4 mr-2" />
               Verify as Correct
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Pending Review Dialog */}
+      <Dialog open={pendingReviewDialog.open} onOpenChange={(open) => !open && setPendingReviewDialog({ open: false, event: null })}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-amber-500" />
+              Review Pending Document
+            </DialogTitle>
+            <DialogDescription>
+              Review the document and mark it as verified or keep it pending for further review.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {pendingReviewDialog.event && (
+            <div className="py-4">
+              {/* Document Information */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
+                <h4 className="font-semibold text-slate-900 mb-2">{pendingReviewDialog.event.title}</h4>
+                <p className="text-sm text-slate-600 mb-3">{pendingReviewDialog.event.description}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {pendingReviewDialog.event.keyData.slice(0, 4).map((item, idx) => (
+                    <div key={idx}>
+                      <p className="text-xs text-slate-500">{item.label}</p>
+                      <p className="font-mono text-sm font-semibold text-slate-900">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Document Preview */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
+                <div className="bg-slate-100 px-4 py-2 border-b border-slate-200">
+                  <span className="text-sm font-medium text-slate-700">Document Preview</span>
+                </div>
+                <div className="bg-white p-4 h-48 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-28 h-36 mx-auto bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center mb-3">
+                      <FileText className="h-10 w-10 text-slate-400" />
+                    </div>
+                    <p className="text-sm text-slate-600">{pendingReviewDialog.event.title}</p>
+                    <p className="text-xs text-slate-400 mt-1">{pendingReviewDialog.event.date}</p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-sm text-slate-600">
+                Verify that all documentation is complete and accurate before marking as verified.
+              </p>
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setPendingReviewDialog({ open: false, event: null })}>
+              Cancel
+            </Button>
+            <Button onClick={handleVerifyPending} className="bg-emerald-600 hover:bg-emerald-700">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Mark as Verified
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* PDF Preview Dialog */}
+      <Dialog open={pdfPreviewDialog.open} onOpenChange={(open) => !open && setPdfPreviewDialog({ open: false, event: null })}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-emerald-500" />
+              Document Preview
+            </DialogTitle>
+            {pdfPreviewDialog.event && (
+              <DialogDescription>
+                {pdfPreviewDialog.event.title}
+              </DialogDescription>
+            )}
+          </DialogHeader>
+          
+          {pdfPreviewDialog.event && (
+            <div className="py-2">
+              {/* Document Information Header */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-4">
+                <div className="grid grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <p className="text-xs text-slate-500">Date</p>
+                    <p className="font-semibold text-slate-900">{pdfPreviewDialog.event.date}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Documents</p>
+                    <p className="font-semibold text-slate-900">{pdfPreviewDialog.event.documents} document(s)</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Status</p>
+                    <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">Verified</Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* PDF Preview Area */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-800">
+                <div className="bg-slate-900 px-4 py-2 border-b border-slate-700 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-300">{pdfPreviewDialog.event.title}.pdf</span>
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="h-[50vh] flex items-center justify-center bg-slate-100">
+                  {pdfPreviewDialog.event.imagePreview ? (
+                    <img 
+                      src={pdfPreviewDialog.event.imagePreview} 
+                      alt="Document preview"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  ) : (
+                    <div className="text-center p-8">
+                      <div className="w-48 h-64 mx-auto bg-white rounded-lg shadow-lg border border-slate-200 flex flex-col items-center justify-center mb-4">
+                        <FileText className="h-16 w-16 text-slate-300 mb-4" />
+                        <div className="w-32 h-2 bg-slate-200 rounded mb-2"></div>
+                        <div className="w-24 h-2 bg-slate-200 rounded mb-2"></div>
+                        <div className="w-28 h-2 bg-slate-200 rounded mb-4"></div>
+                        <div className="w-20 h-2 bg-slate-200 rounded"></div>
+                      </div>
+                      <p className="text-sm text-slate-600">{pdfPreviewDialog.event.title}</p>
+                      <p className="text-xs text-slate-400 mt-1">{pdfPreviewDialog.event.date}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            {pdfPreviewDialog.event?.viewerLink && (
+              <Link href={pdfPreviewDialog.event.viewerLink}>
+                <Button variant="outline" className="gap-2">
+                  <Eye className="h-4 w-4" />
+                  View Full Details
+                </Button>
+              </Link>
+            )}
+            <Button onClick={() => setPdfPreviewDialog({ open: false, event: null })}>
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>
