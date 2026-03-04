@@ -434,41 +434,9 @@ export default function FolderF1Page() {
                               </Link>
                             </td>
                             <td className="py-4 px-4">
-                              {isPending ? (
-                                <div className="flex items-center gap-2">
-                                  <Badge className="bg-amber-100 text-amber-700 border-amber-200">
-                                    Pending Review
-                                  </Badge>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={(e) => openReviewDialog(llp, e)}
-                                    className="h-7 px-2 text-xs text-amber-700 border-amber-300 hover:bg-amber-50"
-                                  >
-                                    <CheckCircle2 className="h-3 w-3 mr-1" />
-                                    Verify
-                                  </Button>
-                                </div>
-                              ) : effectiveStatus === "Completed" ? (
-                                <div className="flex items-center gap-2">
-                                  <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
-                                    Completed
-                                  </Badge>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={(e) => openPdfDialog(llp, e)}
-                                    className="h-7 px-2 text-xs text-slate-600 border-slate-300 hover:bg-slate-50"
-                                  >
-                                    <Eye className="h-3 w-3 mr-1" />
-                                    View PDF
-                                  </Button>
-                                </div>
-                              ) : (
-                                <Link href={llp.link} className="block">
-                                  {getStatusBadge(effectiveStatus)}
-                                </Link>
-                              )}
+                              <Link href={llp.link} className="block">
+                                {getStatusBadge(effectiveStatus)}
+                              </Link>
                             </td>
                           </tr>
                         )
