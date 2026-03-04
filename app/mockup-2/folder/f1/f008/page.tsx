@@ -23,14 +23,13 @@ import { useState } from "react"
 const timelineEvents = [
   {
     id: "operational-history",
-    type: "OPERATION",
     title: "Operational History – ON / OFF Log",
     date: "2 Feb 2022",
-    badgeColor: "bg-cyan-500",
-    dotColor: "bg-cyan-500",
+    dotColor: "bg-emerald-500",
     description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation.",
     documents: 1,
     status: "verified" as const,
+    statusLabel: "Verified",
     viewerLink: "/mockup-2/folder/f1/f008/viewer",
     imagePreview: "/documents/magellan-llp-history.jpg",
     keyData: [
@@ -67,14 +66,13 @@ const timelineEvents = [
   },
   {
     id: "authorized-release",
-    type: "RELEASE",
     title: "Authorized Release Certificate (FAA 8130-3)",
     date: "13 Nov 2020",
-    badgeColor: "bg-violet-500",
-    dotColor: "bg-violet-500",
+    dotColor: "bg-emerald-500",
     description: "Airworthiness release certificate confirming the LLP has been inspected and is approved for return to service.",
     documents: 1,
     status: "verified" as const,
+    statusLabel: "Verified",
     viewerLink: "/mockup-2/folder/f1/f008/viewer/arc",
     imagePreview: "/documents/sia-auth-release-certificate.jpg",
     keyData: [
@@ -93,14 +91,13 @@ const timelineEvents = [
   },
   {
     id: "llp-status",
-    type: "STATUS REPORT",
     title: "LLP Status Report (at Removal)",
     date: "21 Jun 2020",
-    badgeColor: "bg-amber-500",
-    dotColor: "bg-amber-500",
-    description: "Life Limited Part status and remaining life calculation at the time of removal from engine.",
+    dotColor: "bg-red-500",
+    description: "Life Limited Part status and remaining life calculation at the time of removal from engine. Data discrepancy detected in part/serial numbers.",
     documents: 1,
-    status: "warning" as const,
+    status: "flagged" as const,
+    statusLabel: "Issues Found",
     viewerLink: "/mockup-2/folder/f1/f008/viewer/llp-status",
     imagePreview: "/documents/sia-llp-status.jpg",
     keyData: [
@@ -121,14 +118,13 @@ const timelineEvents = [
   },
   {
     id: "incident-clearance",
-    type: "CLEARANCE",
     title: "Incident / Accident Clearance Statement",
     date: "24 May 2020",
-    badgeColor: "bg-emerald-500",
     dotColor: "bg-emerald-500",
     description: "Certification that the engine and all installed parts have no incident or accident history during the period from manufacture to removal.",
     documents: 1,
     status: "verified" as const,
+    statusLabel: "Verified",
     viewerLink: "/mockup-2/folder/f1/f008/viewer/incident-clearance",
     imagePreview: "/documents/sia-incident-clearance.jpg",
     keyData: [
@@ -146,14 +142,13 @@ const timelineEvents = [
   },
   {
     id: "birth-record",
-    type: "MANUFACTURE",
     title: "Engine Data Submittal (Birth Record)",
     date: "14 Feb 2019",
-    badgeColor: "bg-sky-500",
-    dotColor: "bg-sky-500",
+    dotColor: "bg-amber-500",
     description: "Original manufacturing and certification documentation. Part manufactured by CFM International with full material traceability.",
     documents: 1,
-    status: "verified" as const,
+    status: "pending" as const,
+    statusLabel: "Pending Review",
     viewerLink: null,
     imagePreview: null,
     keyData: [
@@ -296,8 +291,10 @@ export default function F1EngineRecordsPage() {
                       }`} style={{ 
                         ringColor: selectedEvent === event.id ? `${event.dotColor.replace('bg-', 'rgb(var(--')})` : undefined 
                       }}>
-                        {event.status === "warning" ? (
+                        {event.status === "flagged" ? (
                           <AlertTriangle className="h-3 w-3 text-white" />
+                        ) : event.status === "pending" ? (
+                          <Clock className="h-3 w-3 text-white" />
                         ) : (
                           <CheckCircle2 className="h-3 w-3 text-white" />
                         )}
@@ -311,8 +308,14 @@ export default function F1EngineRecordsPage() {
                       }`}>
                         <div className="flex items-center gap-2 mb-1">
                           <span className="font-semibold text-slate-900">{event.title.split(" – ")[0].split(" (")[0]}</span>
-                          <Badge className={`${event.badgeColor} text-white text-[10px] px-1.5 py-0`}>
-                            {event.type}
+                          <Badge className={`text-[10px] px-1.5 py-0 ${
+                            event.status === "verified" 
+                              ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
+                              : event.status === "flagged"
+                                ? "bg-red-100 text-red-700 border-red-200"
+                                : "bg-amber-100 text-amber-700 border-amber-200"
+                          }`}>
+                            {event.statusLabel}
                           </Badge>
                         </div>
                         <p className="text-sm text-slate-500 mb-1">{event.date}</p>
@@ -338,8 +341,14 @@ export default function F1EngineRecordsPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-2">
                       <h2 className="text-xl font-bold text-slate-900">{selectedEventData.title}</h2>
-                      <Badge className={`${selectedEventData.badgeColor} text-white`}>
-                        {selectedEventData.type}
+                      <Badge className={`${
+                        selectedEventData.status === "verified" 
+                          ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
+                          : selectedEventData.status === "flagged"
+                            ? "bg-red-100 text-red-700 border-red-200"
+                            : "bg-amber-100 text-amber-700 border-amber-200"
+                      }`}>
+                        {selectedEventData.statusLabel}
                       </Badge>
                     </div>
                     <p className="text-slate-600">{selectedEventData.description}</p>
@@ -368,9 +377,13 @@ export default function F1EngineRecordsPage() {
                     <div>
                       <p className="text-xs text-slate-500">Status</p>
                       <p className={`font-semibold ${
-                        selectedEventData.status === "verified" ? "text-emerald-600" : "text-amber-600"
+                        selectedEventData.status === "verified" 
+                          ? "text-emerald-600" 
+                          : selectedEventData.status === "flagged"
+                            ? "text-red-600"
+                            : "text-amber-600"
                       }`}>
-                        {selectedEventData.status === "verified" ? "Verified" : "Requires Attention"}
+                        {selectedEventData.statusLabel}
                       </p>
                     </div>
                   </div>
