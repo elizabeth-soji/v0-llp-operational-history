@@ -1,13 +1,21 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowLeft, Download, Clock, Upload, ChevronRight, Folder, Search } from "lucide-react"
+import { ArrowLeft, Download, Clock, Upload, ChevronRight, Folder, Search, FileText, CheckCircle2, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 // LLP data for the engine
 const llpData = [
@@ -111,6 +119,34 @@ const llpData = [
 
 export default function FolderF1Page() {
   const [searchQuery, setSearchQuery] = useState("")
+  const [llpStatuses, setLlpStatuses] = useState<Record<number, string>>({})
+  const [reviewDialog, setReviewDialog] = useState<{
+    open: boolean
+    llp: typeof llpData[0] | null
+  }>({ open: false, llp: null })
+
+  // Get the effective status (from state or original data)
+  const getEffectiveStatus = (llp: typeof llpData[0]) => {
+    return llpStatuses[llp.id] || llp.status
+  }
+
+  // Handle marking as verified
+  const handleMarkAsVerified = () => {
+    if (reviewDialog.llp) {
+      setLlpStatuses(prev => ({
+        ...prev,
+        [reviewDialog.llp!.id]: "Completed"
+      }))
+      setReviewDialog({ open: false, llp: null })
+    }
+  }
+
+  // Open review dialog
+  const openReviewDialog = (llp: typeof llpData[0], e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setReviewDialog({ open: true, llp })
+  }
 
   const folderInfo = {
     letter: "F1",
@@ -128,9 +164,9 @@ export default function FolderF1Page() {
       llp.itemNumber.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const completedCount = llpData.filter((l) => l.status === "Completed").length
-  const inProgressCount = llpData.filter((l) => l.status === "In Progress").length
-  const pendingCount = llpData.filter((l) => l.status === "Pending").length
+  const completedCount = llpData.filter((l) => getEffectiveStatus(l) === "Completed").length
+  const inProgressCount = llpData.filter((l) => getEffectiveStatus(l) === "In Progress").length
+  const pendingCount = llpData.filter((l) => getEffectiveStatus(l) === "Pending").length
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -345,50 +381,66 @@ export default function FolderF1Page() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredLLPs.map((llp) => (
-                        <tr
-                          key={llp.id}
-                          className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors"
-                        >
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              <span className="text-sm font-medium text-slate-900">{llp.itemNumber}</span>
-                            </Link>
-                          </td>
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              <span className="text-sm text-slate-700">{llp.nomenclature}</span>
-                            </Link>
-                          </td>
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              <span className="text-sm font-mono text-slate-600">{llp.partNumber}</span>
-                            </Link>
-                          </td>
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              <span className="text-sm font-mono text-slate-600">{llp.serialNumber}</span>
-                            </Link>
-                          </td>
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              <span className="text-sm text-slate-600">{llp.position}</span>
-                            </Link>
-                          </td>
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              <div className="flex items-center gap-2">
-                                {getPartyBadge(llp.party)}
-                              </div>
-                            </Link>
-                          </td>
-                          <td className="py-4 px-4">
-                            <Link href={llp.link} className="block">
-                              {getStatusBadge(llp.status)}
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
+                      {filteredLLPs.map((llp) => {
+                        const effectiveStatus = getEffectiveStatus(llp)
+                        const isPending = effectiveStatus === "Pending"
+                        
+                        return (
+                          <tr
+                            key={llp.id}
+                            className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors"
+                          >
+                            <td className="py-4 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm font-medium text-slate-900">{llp.itemNumber}</span>
+                              </Link>
+                            </td>
+                            <td className="py-4 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm text-slate-700">{llp.nomenclature}</span>
+                              </Link>
+                            </td>
+                            <td className="py-4 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm font-mono text-slate-600">{llp.partNumber}</span>
+                              </Link>
+                            </td>
+                            <td className="py-4 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm font-mono text-slate-600">{llp.serialNumber}</span>
+                              </Link>
+                            </td>
+                            <td className="py-4 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm text-slate-600">{llp.position}</span>
+                              </Link>
+                            </td>
+                            <td className="py-4 px-4">
+                              <Link href={llp.link} className="block">
+                                <div className="flex items-center gap-2">
+                                  {getPartyBadge(llp.party)}
+                                </div>
+                              </Link>
+                            </td>
+                            <td className="py-4 px-4">
+                              {isPending ? (
+                                <button
+                                  onClick={(e) => openReviewDialog(llp, e)}
+                                  className="group"
+                                >
+                                  <Badge className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200 cursor-pointer transition-colors">
+                                    Pending Review
+                                  </Badge>
+                                </button>
+                              ) : (
+                                <Link href={llp.link} className="block">
+                                  {getStatusBadge(effectiveStatus)}
+                                </Link>
+                              )}
+                            </td>
+                          </tr>
+                        )
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -403,6 +455,83 @@ export default function FolderF1Page() {
           </div>
         </div>
       </div>
+
+      {/* Review Dialog */}
+      <Dialog open={reviewDialog.open} onOpenChange={(open) => !open && setReviewDialog({ open: false, llp: null })}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-amber-500" />
+              Review Pending Document
+            </DialogTitle>
+            <DialogDescription>
+              Review the document and mark it as verified or keep it pending for further review.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {reviewDialog.llp && (
+            <div className="py-4">
+              {/* Part Information */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-slate-500">Part Number</p>
+                    <p className="font-mono font-semibold text-slate-900">{reviewDialog.llp.partNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Serial Number</p>
+                    <p className="font-mono font-semibold text-slate-900">{reviewDialog.llp.serialNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Nomenclature</p>
+                    <p className="font-semibold text-slate-900">{reviewDialog.llp.nomenclature}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Position</p>
+                    <p className="font-semibold text-slate-900">{reviewDialog.llp.position}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Document Preview */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
+                <div className="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700">Document Preview</span>
+                  <Link href={reviewDialog.llp.link}>
+                    <Button variant="ghost" size="sm" className="gap-2 text-slate-600 hover:text-slate-900">
+                      <Eye className="h-4 w-4" />
+                      View Full Timeline
+                    </Button>
+                  </Link>
+                </div>
+                <div className="bg-white p-4 h-64 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-32 h-40 mx-auto bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center mb-3">
+                      <FileText className="h-12 w-12 text-slate-400" />
+                    </div>
+                    <p className="text-sm text-slate-600">Birth Record Document</p>
+                    <p className="text-xs text-slate-400 mt-1">Engine Data Submittal</p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-sm text-slate-600">
+                Verify that all documentation for <span className="font-semibold">{reviewDialog.llp.nomenclature}</span> is complete and accurate before marking as verified.
+              </p>
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setReviewDialog({ open: false, llp: null })}>
+              Cancel
+            </Button>
+            <Button onClick={handleMarkAsVerified} className="bg-emerald-600 hover:bg-emerald-700">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Mark as Verified
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
