@@ -278,6 +278,7 @@ export default function Mockup2() {
       documents: 25,
       lastUpdate: "1 hour ago",
       color: "cyan",
+      link: "/mockup-2/folder/f2",
     },
     {
       letter: "G",
