@@ -454,43 +454,6 @@ export default function F1EngineRecordsPage() {
                     </div>
                   </div>
                 </div>
-                    <p className="text-slate-600">{selectedEventData.description}</p>
-                  </div>
-                  {selectedEventData.viewerLink && (
-                    <Link href={selectedEventData.viewerLink}>
-                      <Button className="gap-2">
-                        <Eye className="h-4 w-4" />
-                        View Document
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-
-                {/* Date & Duration */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200">
-                    <Calendar className="h-5 w-5 text-slate-400" />
-                    <div>
-                      <p className="text-xs text-slate-500">Date</p>
-                      <p className="font-semibold text-slate-900">{selectedEventData.date}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200">
-                    <Clock className="h-5 w-5 text-slate-400" />
-                    <div>
-                      <p className="text-xs text-slate-500">Status</p>
-                      <p className={`font-semibold ${
-                        selectedEventData.status === "verified" 
-                          ? "text-emerald-600" 
-                          : selectedEventData.status === "flagged"
-                            ? "text-red-600"
-                            : "text-amber-600"
-                      }`}>
-                        {selectedEventData.statusLabel}
-                      </p>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Parties Involved */}
                 {selectedEventData.parties && selectedEventData.parties.length > 0 && (
