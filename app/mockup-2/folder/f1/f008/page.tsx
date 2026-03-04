@@ -344,28 +344,6 @@ export default function F1EngineRecordsPage() {
               </div>
             </div>
           </div>
-          
-          {/* Progress Bars */}
-          <div className="mt-4 grid grid-cols-2 gap-6">
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-slate-700">Regulatory Status</span>
-                <span className="text-sm font-semibold text-emerald-600">100%</span>
-              </div>
-              <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
-                <div className="h-full bg-emerald-500 rounded-full" style={{ width: "100%" }} />
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-slate-700">Commercial (BTB)</span>
-                <span className="text-sm font-semibold text-cyan-600">85%</span>
-              </div>
-              <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
-                <div className="h-full bg-cyan-500 rounded-full" style={{ width: "85%" }} />
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Main Content - Timeline & Detail Panel */}
