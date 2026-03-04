@@ -213,6 +213,7 @@ export default function F1EngineRecordsPage() {
     open: boolean
     event: typeof timelineEvents[0] | null
   }>({ open: false, event: null })
+  const [exportReportDialog, setExportReportDialog] = useState(false)
   
   const selectedEventData = timelineEvents.find(e => e.id === selectedEvent)
   
@@ -312,9 +313,13 @@ export default function F1EngineRecordsPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button size="sm" className="bg-slate-900 hover:bg-slate-800">
+              <Button 
+                size="sm" 
+                className="bg-slate-900 hover:bg-slate-800"
+                onClick={() => setExportReportDialog(true)}
+              >
                 <Download className="h-4 w-4 mr-2" />
-                Export BTB Package
+                Export LLP Documentation Report
               </Button>
             </div>
           </div>
@@ -887,6 +892,109 @@ export default function F1EngineRecordsPage() {
             <Button onClick={() => setPdfPreviewDialog({ open: false, event: null })}>
               Close
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Export LLP Documentation Report Dialog */}
+      <Dialog open={exportReportDialog} onOpenChange={setExportReportDialog}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-slate-600" />
+              LLP Documentation Report
+            </DialogTitle>
+            <DialogDescription>
+              Complete documentation package for Life Limited Part GFF5H1TD
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-2">
+            {/* Report Information Header */}
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-4">
+              <div className="grid grid-cols-4 gap-4 text-sm">
+                <div>
+                  <p className="text-xs text-slate-500">Part Number</p>
+                  <p className="font-mono font-semibold text-slate-900">2116M25P01</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Serial Number</p>
+                  <p className="font-mono font-semibold text-slate-900">GFF5H1TD</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Description</p>
+                  <p className="font-semibold text-slate-900">SEAL, AIR HPC</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500">Engine Type</p>
+                  <p className="font-semibold text-slate-900">CFM56</p>
+                </div>
+              </div>
+            </div>
+
+            {/* PDF Preview Area */}
+            <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-800">
+              <div className="bg-slate-900 px-4 py-2 border-b border-slate-700 flex items-center justify-between">
+                <span className="text-sm font-medium text-slate-300">LLP Documentation Report - GFF5H1TD.pdf</span>
+                <div className="flex items-center gap-2">
+                  <a href="/documents/llp-documentation-report.pdf" download>
+                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+              <div className="h-[50vh] overflow-auto bg-white">
+                <iframe 
+                  src="/documents/llp-documentation-report.pdf" 
+                  className="w-full h-full"
+                  title="LLP Documentation Report"
+                />
+              </div>
+            </div>
+
+            {/* Document Contents */}
+            <div className="mt-4 bg-slate-50 border border-slate-200 rounded-lg p-3">
+              <p className="text-xs text-slate-500 mb-2">Report Contents</p>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                  <span className="text-slate-700">Documentation Check Certificate</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                  <span className="text-slate-700">Life Limited Part History Data</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                  <span className="text-slate-700">EASA Form 1 Release Certificate</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                  <span className="text-slate-700">Non-Incident Statement</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                  <span className="text-slate-700">LLP Status Report</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                  <span className="text-slate-700">Technical Log Records</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setExportReportDialog(false)}>
+              Close
+            </Button>
+            <a href="/documents/llp-documentation-report.pdf" download>
+              <Button className="bg-slate-900 hover:bg-slate-800">
+                <Download className="h-4 w-4 mr-2" />
+                Download Report
+              </Button>
+            </a>
           </DialogFooter>
         </DialogContent>
       </Dialog>
