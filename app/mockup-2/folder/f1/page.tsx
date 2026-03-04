@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress"
 export default function FolderF1Page() {
   const folderInfo = {
     letter: "F1",
-    name: "Engine Records 1",
+    name: "Life-Long Parts",
     progress: 65,
     status: "in-progress",
     documents: 32,
@@ -16,14 +16,14 @@ export default function FolderF1Page() {
 
   const subfolders = [
     {
-      code: "F 001",
+      code: "F 008",
       name: "LLP Back to Birth Records",
       progress: 75,
       documents: 5,
       lastUpdate: "1 hour ago",
       assignee: "Sarah C.",
       party: "MRO",
-      link: "/mockup-2/folder/f1/f001",
+      link: "/mockup-2/folder/f1/f008",
     },
   ]
 

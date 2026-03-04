@@ -55,7 +55,7 @@ const timelineEvents = [
     description: "Certification that the engine and all installed parts have no incident or accident history during the period from manufacture to removal.",
     documents: 1,
     status: "verified" as const,
-    viewerLink: "/mockup-2/folder/f1/f001/viewer/incident-clearance",
+    viewerLink: "/mockup-2/folder/f1/f008/viewer/incident-clearance",
     imagePreview: "/documents/sia-incident-clearance.jpg",
     keyData: [
       { label: "Date", value: "24th May 2020" },
@@ -80,7 +80,7 @@ const timelineEvents = [
     description: "Life Limited Part status and remaining life calculation at the time of removal from engine.",
     documents: 1,
     status: "warning" as const,
-    viewerLink: "/mockup-2/folder/f1/f001/viewer/llp-status",
+    viewerLink: "/mockup-2/folder/f1/f008/viewer/llp-status",
     imagePreview: "/documents/sia-llp-status.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
@@ -108,7 +108,7 @@ const timelineEvents = [
     description: "Airworthiness release certificate confirming the LLP has been inspected and is approved for return to service.",
     documents: 1,
     status: "verified" as const,
-    viewerLink: "/mockup-2/folder/f1/f001/viewer/arc",
+    viewerLink: "/mockup-2/folder/f1/f008/viewer/arc",
     imagePreview: "/documents/sia-auth-release-certificate.jpg",
     keyData: [
       { label: "Part Number", value: "340-301-301-0", highlight: true },
@@ -134,7 +134,7 @@ const timelineEvents = [
     description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation.",
     documents: 1,
     status: "verified" as const,
-    viewerLink: "/mockup-2/folder/f1/f001/viewer",
+    viewerLink: "/mockup-2/folder/f1/f008/viewer",
     imagePreview: "/documents/magellan-llp-history.jpg",
     keyData: [
       { label: "LLP Part Number", value: "340-301-301-0", highlight: true },
