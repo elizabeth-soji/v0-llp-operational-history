@@ -23,7 +23,7 @@ export default function FolderF2Page() {
       lastUpdate: "2 hours ago",
       assignee: "Sarah C.",
       party: "MRO",
-      link: "/mockup-2/folder/f2/f008",
+      link: "/mockup-2/folder/f1",
     },
   ]
 

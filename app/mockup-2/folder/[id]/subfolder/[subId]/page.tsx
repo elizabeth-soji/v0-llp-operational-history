@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, use } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -163,8 +163,9 @@ const hardTimeComponents = [
   },
 ]
 
-export default function ComponentsPage({ params }: { params: { subId: string } }) {
-  const isOcCm = params.subId?.toLowerCase() === "h002"
+export default function ComponentsPage({ params }: { params: Promise<{ subId: string }> }) {
+  const { subId } = use(params)
+  const isOcCm = subId?.toLowerCase() === "h002"
   const componentsData = isOcCm ? ocCmComponents : hardTimeComponents
   const pageTitle = isOcCm ? "On Condition / Condition Monitored Components" : "Hard Time Components"
   const breadcrumbTitle = isOcCm ? "H002. OC/CM Components" : "H001. Hard Time Components"
@@ -451,7 +452,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                         <tr key={component.itemNumber} className="hover:bg-gray-50 transition-colors cursor-pointer">
                           <td className="px-4 py-3 text-sm font-medium text-gray-900">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.itemNumber}
@@ -459,7 +460,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-mono">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.mpdReference}
@@ -467,7 +468,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3 text-sm font-medium text-gray-900">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.nomenclature}
@@ -475,7 +476,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-mono">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.partNumber}
@@ -483,7 +484,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-mono">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.serialNumber}
@@ -491,7 +492,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-700 font-semibold">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               {component.position}
@@ -499,7 +500,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               <Badge variant="outline" className={getAssigneeColor(component.assignee)}>
@@ -509,7 +510,7 @@ export default function ComponentsPage({ params }: { params: { subId: string } }
                           </td>
                           <td className="px-4 py-3">
                             <Link
-                              href={`/mockup-2/folder/h/subfolder/${params.subId}/part/${component.itemNumber}`}
+                              href={`/mockup-2/folder/h/subfolder/${subId}/part/${component.itemNumber}`}
                               className="block"
                             >
                               <Badge variant="outline" className={getStatusColor(component.status)}>
