@@ -932,23 +932,23 @@ export default function F1EngineRecordsPage() {
               </div>
             </div>
 
-            {/* PDF Preview Area */}
-            <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-800">
-              <div className="bg-slate-900 px-4 py-2 border-b border-slate-700 flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-300">LLP Documentation Report - GFF5H1TD.pdf</span>
+            {/* Document Preview Area */}
+            <div className="border border-slate-200 rounded-lg overflow-hidden">
+              <div className="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center justify-between">
+                <span className="text-sm font-medium text-slate-700">Documentation Check for Life Limited Parts</span>
                 <div className="flex items-center gap-2">
-                  <a href="/documents/llp-documentation-report.pdf" download>
-                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                  <a href="/documents/llp-documentation-check.png" download>
+                    <Button variant="ghost" size="sm" className="text-slate-500 hover:text-slate-900">
                       <Download className="h-4 w-4" />
                     </Button>
                   </a>
                 </div>
               </div>
-              <div className="h-[50vh] overflow-auto bg-white">
-                <iframe 
-                  src="/documents/llp-documentation-report.pdf" 
-                  className="w-full h-full"
-                  title="LLP Documentation Report"
+              <div className="h-[50vh] overflow-auto bg-white flex items-center justify-center p-4">
+                <img 
+                  src="/documents/llp-documentation-check.png" 
+                  alt="LLP Documentation Check"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
             </div>
