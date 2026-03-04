@@ -162,8 +162,8 @@ const timelineEvents = [
     documents: 1,
     status: "pending" as const,
     statusLabel: "Pending Review",
-    viewerLink: null,
-    imagePreview: null,
+    viewerLink: "/mockup-2/folder/f1/f008/viewer/birth-record",
+    imagePreview: "/documents/sia-llps-birth.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
       { label: "Part Number", value: "340-301-301-0", highlight: true },
