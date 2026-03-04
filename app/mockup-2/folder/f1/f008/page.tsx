@@ -5,6 +5,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
   ChevronLeft,
   Download,
   FileText,
@@ -185,11 +193,64 @@ function CrossCheckStatus({ status }: { status: "match" | "warning" | "missing" 
 
 export default function F1EngineRecordsPage() {
   const [selectedEvent, setSelectedEvent] = useState<string>("operational-history")
+  const [resolvedDiscrepancies, setResolvedDiscrepancies] = useState<Record<string, string[]>>({})
+  const [discrepancyDialog, setDiscrepancyDialog] = useState<{
+    open: boolean
+    eventId: string
+    field: { label: string; value: string } | null
+  }>({ open: false, eventId: "", field: null })
   
   const selectedEventData = timelineEvents.find(e => e.id === selectedEvent)
   
   const matchCount = crossCheckVariables.filter((v) => v.status === "match").length
   const warningCount = crossCheckVariables.filter((v) => v.status === "warning").length
+
+  // Check if a specific field has been resolved
+  const isFieldResolved = (eventId: string, label: string) => {
+    return resolvedDiscrepancies[eventId]?.includes(label) || false
+  }
+
+  // Get the effective status of an event (considering resolved discrepancies)
+  const getEffectiveEventStatus = (event: typeof timelineEvents[0]) => {
+    if (event.status !== "flagged") return event
+    
+    const discrepancyFields = event.keyData.filter(k => k.status === "discrepancy")
+    const allResolved = discrepancyFields.every(field => isFieldResolved(event.id, field.label))
+    
+    if (allResolved && discrepancyFields.length > 0) {
+      return {
+        ...event,
+        status: "verified" as const,
+        statusLabel: "Verified",
+        dotColor: "bg-emerald-500"
+      }
+    }
+    return event
+  }
+
+  // Handle resolving a discrepancy
+  const handleResolveDiscrepancy = () => {
+    if (!discrepancyDialog.field || !discrepancyDialog.eventId) return
+    
+    setResolvedDiscrepancies(prev => ({
+      ...prev,
+      [discrepancyDialog.eventId]: [
+        ...(prev[discrepancyDialog.eventId] || []),
+        discrepancyDialog.field!.label
+      ]
+    }))
+    setDiscrepancyDialog({ open: false, eventId: "", field: null })
+  }
+
+  // Handle keeping a field flagged
+  const handleKeepFlagged = () => {
+    setDiscrepancyDialog({ open: false, eventId: "", field: null })
+  }
+
+  // Open discrepancy dialog
+  const openDiscrepancyDialog = (eventId: string, field: { label: string; value: string }) => {
+    setDiscrepancyDialog({ open: true, eventId, field })
+  }
 
   return (
     <TooltipProvider>
@@ -270,11 +331,13 @@ export default function F1EngineRecordsPage() {
           {/* Left: Timeline */}
           <div className="w-[480px] border-r bg-white overflow-y-auto">
             <div className="p-4">
-              {timelineEvents.map((event, index) => (
+              {timelineEvents.map((event, index) => {
+                const effectiveEvent = getEffectiveEventStatus(event)
+                return (
                 <div key={event.id} className="relative">
-                  {/* Connector Line */}
+                  {/* Connecting Line */}
                   {index < timelineEvents.length - 1 && (
-                    <div className="absolute left-[11px] top-[28px] w-0.5 h-[calc(100%-8px)] bg-slate-200" />
+                    <div className="absolute left-3 top-6 w-0.5 h-full bg-slate-200" />
                   )}
                   
                   {/* Timeline Entry */}
@@ -286,14 +349,14 @@ export default function F1EngineRecordsPage() {
                   >
                     <div className="flex gap-3">
                       {/* Dot */}
-                      <div className={`relative z-10 w-6 h-6 rounded-full ${event.dotColor} flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                      <div className={`relative z-10 w-6 h-6 rounded-full ${effectiveEvent.dotColor} flex items-center justify-center flex-shrink-0 mt-0.5 ${
                         selectedEvent === event.id ? "ring-4 ring-offset-2" : ""
                       }`} style={{ 
-                        ringColor: selectedEvent === event.id ? `${event.dotColor.replace('bg-', 'rgb(var(--')})` : undefined 
+                        ringColor: selectedEvent === event.id ? `${effectiveEvent.dotColor.replace('bg-', 'rgb(var(--')})` : undefined 
                       }}>
-                        {event.status === "flagged" ? (
+                        {effectiveEvent.status === "flagged" ? (
                           <AlertTriangle className="h-3 w-3 text-white" />
-                        ) : event.status === "pending" ? (
+                        ) : effectiveEvent.status === "pending" ? (
                           <Clock className="h-3 w-3 text-white" />
                         ) : (
                           <CheckCircle2 className="h-3 w-3 text-white" />
@@ -309,13 +372,13 @@ export default function F1EngineRecordsPage() {
                         <div className="flex items-center gap-2 mb-1">
                           <span className="font-semibold text-slate-900">{event.title.split(" – ")[0].split(" (")[0]}</span>
                           <Badge className={`text-[10px] px-1.5 py-0 ${
-                            event.status === "verified" 
+                            effectiveEvent.status === "verified" 
                               ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
-                              : event.status === "flagged"
+                              : effectiveEvent.status === "flagged"
                                 ? "bg-red-100 text-red-700 border-red-200"
                                 : "bg-amber-100 text-amber-700 border-amber-200"
                           }`}>
-                            {event.statusLabel}
+                            {effectiveEvent.statusLabel}
                           </Badge>
                         </div>
                         <p className="text-sm text-slate-500 mb-1">{event.date}</p>
@@ -328,29 +391,69 @@ export default function F1EngineRecordsPage() {
                     </div>
                   </button>
                 </div>
-              ))}
+              )})}
+            
             </div>
           </div>
 
           {/* Right: Detail Panel */}
           <div className="flex-1 bg-slate-50 overflow-y-auto">
-            {selectedEventData && (
+          {selectedEventData && (() => {
+              const effectiveSelectedEvent = getEffectiveEventStatus(selectedEventData)
+              return (
               <div className="p-6">
-                {/* Detail Header */}
+                {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
                       <h2 className="text-xl font-bold text-slate-900">{selectedEventData.title}</h2>
                       <Badge className={`${
-                        selectedEventData.status === "verified" 
+                        effectiveSelectedEvent.status === "verified" 
                           ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
-                          : selectedEventData.status === "flagged"
+                          : effectiveSelectedEvent.status === "flagged"
                             ? "bg-red-100 text-red-700 border-red-200"
                             : "bg-amber-100 text-amber-700 border-amber-200"
                       }`}>
-                        {selectedEventData.statusLabel}
+                        {effectiveSelectedEvent.statusLabel}
                       </Badge>
                     </div>
+                    <p className="text-slate-600">{selectedEventData.description}</p>
+                  </div>
+                  {selectedEventData.viewerLink && (
+                    <Link href={selectedEventData.viewerLink}>
+                      <Button className="gap-2">
+                        <Eye className="h-4 w-4" />
+                        View Document
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+
+                {/* Date & Duration */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200">
+                    <Calendar className="h-5 w-5 text-slate-400" />
+                    <div>
+                      <p className="text-xs text-slate-500">Date</p>
+                      <p className="font-semibold text-slate-900">{selectedEventData.date}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200">
+                    <Clock className="h-5 w-5 text-slate-400" />
+                    <div>
+                      <p className="text-xs text-slate-500">Status</p>
+                      <p className={`font-semibold ${
+                        effectiveSelectedEvent.status === "verified" 
+                          ? "text-emerald-600" 
+                          : effectiveSelectedEvent.status === "flagged"
+                            ? "text-red-600"
+                            : "text-amber-600"
+                      }`}>
+                        {effectiveSelectedEvent.statusLabel}
+                      </p>
+                    </div>
+                  </div>
+                </div>
                     <p className="text-slate-600">{selectedEventData.description}</p>
                   </div>
                   {selectedEventData.viewerLink && (
@@ -414,53 +517,63 @@ export default function F1EngineRecordsPage() {
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-slate-700 mb-3">Key Data Summary</h3>
                     <div className="grid grid-cols-2 gap-2">
-                      {selectedEventData.keyData.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className={`flex justify-between items-center p-3 rounded-lg ${
-                            item.status === "discrepancy"
-                              ? "bg-amber-50 border border-amber-200"
-                              : item.status === "success"
-                                ? "bg-emerald-50 border border-emerald-200"
-                                : item.highlight
-                                  ? "bg-cyan-50 border border-cyan-100"
-                                  : "bg-slate-50"
-                          }`}
-                        >
-                          <span className={`text-sm ${
-                            item.status === "discrepancy"
-                              ? "text-amber-800 font-medium"
-                              : item.status === "success"
-                                ? "text-emerald-800 font-medium"
-                                : item.highlight
-                                  ? "text-slate-700 font-medium"
-                                  : "text-slate-500"
-                          }`}>
-                            {item.status === "discrepancy" && (
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold cursor-help mr-2">!</span>
-                                </TooltipTrigger>
-                                <TooltipContent side="top" className="bg-amber-600 text-white">
-                                  Numbers don&apos;t match
-                                </TooltipContent>
-                              </Tooltip>
-                            )}
-                            {item.label}
-                          </span>
-                          <span className={`text-sm font-mono ${
-                            item.status === "discrepancy"
-                              ? "font-semibold text-amber-700"
-                              : item.status === "success"
-                                ? "font-semibold text-emerald-700"
-                                : item.highlight
-                                  ? "font-semibold text-cyan-700"
-                                  : "text-slate-900"
-                          }`}>
-                            {item.value}
-                          </span>
-                        </div>
-                      ))}
+                      {selectedEventData.keyData.map((item, idx) => {
+                        const isResolved = item.status === "discrepancy" && isFieldResolved(selectedEventData.id, item.label)
+                        const effectiveStatus = isResolved ? "success" : item.status
+                        const isClickable = item.status === "discrepancy" && !isResolved
+                        
+                        return (
+                          <div
+                            key={idx}
+                            onClick={() => isClickable && openDiscrepancyDialog(selectedEventData.id, item)}
+                            className={`flex justify-between items-center p-3 rounded-lg ${
+                              effectiveStatus === "discrepancy"
+                                ? "bg-amber-50 border border-amber-200 cursor-pointer hover:bg-amber-100 transition-colors"
+                                : effectiveStatus === "success"
+                                  ? "bg-emerald-50 border border-emerald-200"
+                                  : item.highlight
+                                    ? "bg-cyan-50 border border-cyan-100"
+                                    : "bg-slate-50"
+                            }`}
+                          >
+                            <span className={`text-sm ${
+                              effectiveStatus === "discrepancy"
+                                ? "text-amber-800 font-medium"
+                                : effectiveStatus === "success"
+                                  ? "text-emerald-800 font-medium"
+                                  : item.highlight
+                                    ? "text-slate-700 font-medium"
+                                    : "text-slate-500"
+                            }`}>
+                              {effectiveStatus === "discrepancy" && (
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold cursor-pointer mr-2">!</span>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" className="bg-amber-600 text-white">
+                                    Click to review discrepancy
+                                  </TooltipContent>
+                                </Tooltip>
+                              )}
+                              {isResolved && (
+                                <CheckCircle2 className="inline-block w-4 h-4 text-emerald-600 mr-2" />
+                              )}
+                              {item.label}
+                            </span>
+                            <span className={`text-sm font-mono ${
+                              effectiveStatus === "discrepancy"
+                                ? "font-semibold text-amber-700"
+                                : effectiveStatus === "success"
+                                  ? "font-semibold text-emerald-700"
+                                  : item.highlight
+                                    ? "font-semibold text-cyan-700"
+                                    : "text-slate-900"
+                            }`}>
+                              {item.value}
+                            </span>
+                          </div>
+                        )
+                      })}
                     </div>
                   </CardContent>
                 </Card>
@@ -542,7 +655,7 @@ export default function F1EngineRecordsPage() {
                   </Card>
                 )}
               </div>
-            )}
+            )})()}
           </div>
         </div>
 
@@ -568,6 +681,45 @@ export default function F1EngineRecordsPage() {
           </p>
         </div>
       </div>
+
+      {/* Discrepancy Confirmation Dialog */}
+      <Dialog open={discrepancyDialog.open} onOpenChange={(open) => !open && setDiscrepancyDialog({ open: false, eventId: "", field: null })}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              Review Discrepancy
+            </DialogTitle>
+            <DialogDescription>
+              A potential data discrepancy has been flagged for this field. Please review and confirm.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {discrepancyDialog.field && (
+            <div className="py-4">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-amber-800">{discrepancyDialog.field.label}</span>
+                  <span className="text-sm font-mono font-semibold text-amber-700">{discrepancyDialog.field.value}</span>
+                </div>
+              </div>
+              <p className="text-sm text-slate-600">
+                This value has been flagged because it may not match expected records. You can verify it as correct or keep it flagged for further review.
+              </p>
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2 sm:gap-0">
+            <Button variant="outline" onClick={handleKeepFlagged}>
+              Keep Flagged
+            </Button>
+            <Button onClick={handleResolveDiscrepancy} className="bg-emerald-600 hover:bg-emerald-700">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Verify as Correct
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </TooltipProvider>
   )
 }
