@@ -319,7 +319,7 @@ export default function F1EngineRecordsPage() {
                 onClick={() => setExportReportDialog(true)}
               >
                 <Download className="h-4 w-4 mr-2" />
-                Export LLP Documentation Report
+                Export LLP Report
               </Button>
             </div>
           </div>
