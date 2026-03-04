@@ -508,7 +508,7 @@ export default function F1EngineRecordsPage() {
                                 className="h-6 px-2 text-xs text-amber-700 border-amber-300 hover:bg-amber-50"
                               >
                                 <CheckCircle2 className="h-3 w-3 mr-1" />
-                                Verify
+                                Verify and sign
                               </Button>
                             )}
                             {effectiveSelectedEvent.status === "verified" && selectedEventData.viewerLink && (
@@ -811,9 +811,9 @@ export default function F1EngineRecordsPage() {
             <Button variant="outline" onClick={() => setPendingReviewDialog({ open: false, event: null })}>
               Cancel
             </Button>
-            <Button onClick={handleVerifyPending} className="bg-emerald-600 hover:bg-emerald-700">
+<Button onClick={handleVerifyPending} className="bg-emerald-600 hover:bg-emerald-700">
               <CheckCircle2 className="h-4 w-4 mr-2" />
-              Mark as Verified
+              Verify and sign
             </Button>
           </DialogFooter>
         </DialogContent>
