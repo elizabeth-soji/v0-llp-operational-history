@@ -214,6 +214,10 @@ export default function F2EngineRecordsPage() {
     open: boolean
     event: typeof timelineEvents[0] | null
   }>({ open: false, event: null })
+  const [flaggedReviewDialog, setFlaggedReviewDialog] = useState<{
+    open: boolean
+    event: typeof timelineEvents[0] | null
+  }>({ open: false, event: null })
   const [exportReportDialog, setExportReportDialog] = useState(false)
   
   const selectedEventData = timelineEvents.find(e => e.id === selectedEvent)
@@ -299,6 +303,19 @@ export default function F2EngineRecordsPage() {
   // Open pending review dialog
   const openPendingReviewDialog = (event: typeof timelineEvents[0]) => {
     setPendingReviewDialog({ open: true, event })
+  }
+
+  // Handle verifying a flagged event
+  const handleVerifyFlagged = () => {
+    if (flaggedReviewDialog.event) {
+      setVerifiedFlaggedEvents(prev => [...prev, flaggedReviewDialog.event!.id])
+      setFlaggedReviewDialog({ open: false, event: null })
+    }
+  }
+
+  // Open flagged review dialog
+  const openFlaggedReviewDialog = (event: typeof timelineEvents[0]) => {
+    setFlaggedReviewDialog({ open: true, event })
   }
 
   // Open PDF preview dialog
@@ -518,7 +535,7 @@ export default function F2EngineRecordsPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => setVerifiedFlaggedEvents(prev => [...prev, selectedEventData.id])}
+                                onClick={() => openFlaggedReviewDialog(selectedEventData)}
                                 className="h-6 px-2 text-xs text-red-700 border-red-300 hover:bg-red-50"
                               >
                                 <CheckCircle2 className="h-3 w-3 mr-1" />
@@ -834,6 +851,67 @@ export default function F2EngineRecordsPage() {
               Cancel
             </Button>
 <Button onClick={handleVerifyPending} className="bg-emerald-600 hover:bg-emerald-700">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Verify and sign
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Flagged Review Dialog */}
+      <Dialog open={flaggedReviewDialog.open} onOpenChange={(open) => !open && setFlaggedReviewDialog({ open: false, event: null })}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-red-500" />
+              Review Flagged Document
+            </DialogTitle>
+            <DialogDescription>
+              Review the document with issues and mark it as verified after resolving findings.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {flaggedReviewDialog.event && (
+            <div className="py-4">
+              {/* Document Information */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
+                <h4 className="font-semibold text-slate-900 mb-2">{flaggedReviewDialog.event.title}</h4>
+                <p className="text-sm text-slate-600 mb-3">{flaggedReviewDialog.event.description}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {flaggedReviewDialog.event.keyData.slice(0, 4).map((item, idx) => (
+                    <div key={idx}>
+                      <p className="text-xs text-slate-500">{item.label}</p>
+                      <p className="font-mono text-sm font-semibold text-slate-900">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Document Preview */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
+                <div className="bg-slate-100 px-4 py-2 border-b border-slate-200">
+                  <span className="text-sm font-medium text-slate-700">Document Preview</span>
+                </div>
+                <div className="bg-white p-4 h-64 flex items-center justify-center">
+                  <img 
+                    src="/documents/llp-status-report.jpg" 
+                    alt="LLP Status Report"
+                    className="max-h-full max-w-full object-contain rounded border border-slate-200"
+                  />
+                </div>
+              </div>
+
+              <p className="text-sm text-slate-600">
+                Verify that all issues have been reviewed and addressed before marking as verified.
+              </p>
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setFlaggedReviewDialog({ open: false, event: null })}>
+              Cancel
+            </Button>
+            <Button onClick={handleVerifyFlagged} className="bg-emerald-600 hover:bg-emerald-700">
               <CheckCircle2 className="h-4 w-4 mr-2" />
               Verify and sign
             </Button>
