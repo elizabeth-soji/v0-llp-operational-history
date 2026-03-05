@@ -775,7 +775,7 @@ export default function F2EngineRecordsPage() {
             </div>
           )}
 
-          <DialogFooter className="flex gap-2 sm:gap-0">
+          <DialogFooter className="flex gap-2">
             <Button variant="outline" onClick={handleKeepFlagged}>
               Keep Flagged
             </Button>
@@ -846,7 +846,7 @@ export default function F2EngineRecordsPage() {
             </div>
           )}
 
-          <DialogFooter className="flex gap-2 sm:gap-0">
+          <DialogFooter className="flex gap-2">
             <Button variant="outline" onClick={() => setPendingReviewDialog({ open: false, event: null })}>
               Cancel
             </Button>
@@ -907,7 +907,7 @@ export default function F2EngineRecordsPage() {
             </div>
           )}
 
-          <DialogFooter className="flex gap-2 sm:gap-0">
+          <DialogFooter className="flex gap-2">
             <Button variant="outline" onClick={() => setFlaggedReviewDialog({ open: false, event: null })}>
               Cancel
             </Button>
