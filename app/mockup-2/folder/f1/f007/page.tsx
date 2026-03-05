@@ -145,8 +145,8 @@ export default function FolderF1F007Page() {
   const folderInfo = {
     letter: "F1",
     name: "Engine Records 1",
-    progress: 98,
-    status: "in-progress" as const,
+    progress: 100,
+    status: "complete" as const,
     documents: 32,
   }
 
