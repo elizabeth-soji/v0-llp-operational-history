@@ -242,9 +242,9 @@ export default function FolderF1Page() {
           <div className="flex items-center gap-2">
             <span className="text-sm text-slate-500">Overall Progress:</span>
             <div className="w-48">
-              <Progress value={68} className="h-2" />
+              <Progress value={98} className="h-2" />
             </div>
-            <span className="text-sm font-semibold text-slate-900">68%</span>
+            <span className="text-sm font-semibold text-slate-900">98%</span>
           </div>
         </div>
       </div>
