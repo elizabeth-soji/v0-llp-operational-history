@@ -108,7 +108,7 @@ const timelineEvents = [
     description: "Life Limited Part status and remaining life calculation at the time of removal from engine. Data discrepancy detected in part/serial numbers.",
     documents: 1,
     status: "flagged" as const,
-    statusLabel: "Issues Found",
+    statusLabel: "AI Findings",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
     imagePreview: "/documents/sia-llp-status.jpg",
     keyData: [
@@ -594,7 +594,7 @@ export default function F2EngineRecordsPage() {
                             onClick={() => isClickable && openDiscrepancyDialog(selectedEventData.id, item)}
                             className={`flex justify-between items-center p-3 rounded-lg ${
                               effectiveStatus === "discrepancy"
-                                ? "bg-amber-50 border border-amber-200 cursor-pointer hover:bg-amber-100 transition-colors"
+                                ? "bg-red-50 border border-red-200 cursor-pointer hover:bg-red-100 transition-colors"
                                 : effectiveStatus === "success"
                                   ? "bg-emerald-50 border border-emerald-200"
                                   : item.highlight
@@ -604,7 +604,7 @@ export default function F2EngineRecordsPage() {
                           >
                             <span className={`text-sm ${
                               effectiveStatus === "discrepancy"
-                                ? "text-amber-800 font-medium"
+                                ? "text-red-800 font-medium"
                                 : effectiveStatus === "success"
                                   ? "text-emerald-800 font-medium"
                                   : item.highlight
@@ -614,10 +614,10 @@ export default function F2EngineRecordsPage() {
                               {effectiveStatus === "discrepancy" && (
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold cursor-pointer mr-2">!</span>
+                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold cursor-pointer mr-2">!</span>
                                   </TooltipTrigger>
-                                  <TooltipContent side="top" className="bg-amber-600 text-white">
-                                    Click to review discrepancy
+                                  <TooltipContent side="top" className="bg-red-600 text-white">
+                                    Click to review AI finding
                                   </TooltipContent>
                                 </Tooltip>
                               )}
@@ -628,7 +628,7 @@ export default function F2EngineRecordsPage() {
                             </span>
                             <span className={`text-sm font-mono ${
                               effectiveStatus === "discrepancy"
-                                ? "font-semibold text-amber-700"
+                                ? "font-semibold text-red-700"
                                 : effectiveStatus === "success"
                                   ? "font-semibold text-emerald-700"
                                   : item.highlight
