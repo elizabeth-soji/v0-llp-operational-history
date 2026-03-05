@@ -396,8 +396,8 @@ export default function F1EngineRecordsPage() {
                       }`}>
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <p className="text-lg font-bold text-slate-900 mb-0.5">{event.date}</p>
-                            <p className="font-semibold text-slate-700">{event.title.split(" – ")[0].split(" (")[0]}</p>
+                            <p className="text-lg font-bold text-slate-900 mb-0.5">{event.title.split(" – ")[0].split(" (")[0]}</p>
+                            <p className="font-semibold text-slate-700">{event.date}</p>
                           </div>
                           <span className={`text-xs px-2 py-0.5 rounded-full ${
                             event.category === "Maintenance" 
