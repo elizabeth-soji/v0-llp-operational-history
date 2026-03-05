@@ -200,6 +200,7 @@ export default function F2EngineRecordsPage() {
   const [selectedEvent, setSelectedEvent] = useState<string>("operational-history")
   const [resolvedDiscrepancies, setResolvedDiscrepancies] = useState<Record<string, string[]>>({})
   const [verifiedPendingEvents, setVerifiedPendingEvents] = useState<string[]>([])
+  const [verifiedFlaggedEvents, setVerifiedFlaggedEvents] = useState<string[]>([])
   const [discrepancyDialog, setDiscrepancyDialog] = useState<{
     open: boolean
     eventId: string
@@ -225,10 +226,20 @@ export default function F2EngineRecordsPage() {
     return resolvedDiscrepancies[eventId]?.includes(label) || false
   }
 
-  // Get the effective status of an event (considering resolved discrepancies and verified pending)
+  // Get the effective status of an event (considering resolved discrepancies and verified pending/flagged)
   const getEffectiveEventStatus = (event: typeof timelineEvents[0]) => {
     // Check if pending event was manually verified
     if (event.status === "pending" && verifiedPendingEvents.includes(event.id)) {
+      return {
+        ...event,
+        status: "verified" as const,
+        statusLabel: "Verified",
+        dotColor: "bg-emerald-500"
+      }
+    }
+    
+    // Check if flagged event was manually verified
+    if (event.status === "flagged" && verifiedFlaggedEvents.includes(event.id)) {
       return {
         ...event,
         status: "verified" as const,
@@ -415,15 +426,31 @@ export default function F2EngineRecordsPage() {
                             <FileText className="h-3 w-3" />
                             <span>{event.documents} document</span>
                           </div>
-                          <Badge className={`text-[10px] px-1.5 py-0 ${
-                            effectiveEvent.status === "verified" 
-                              ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
-                              : effectiveEvent.status === "flagged"
-                                ? "bg-red-100 text-red-700 border-red-200"
-                                : "bg-amber-100 text-amber-700 border-amber-200"
-                          }`}>
-                            {effectiveEvent.statusLabel}
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                              effectiveEvent.status === "verified" 
+                                ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
+                                : effectiveEvent.status === "flagged"
+                                  ? "bg-red-100 text-red-700 border-red-200"
+                                  : "bg-amber-100 text-amber-700 border-amber-200"
+                            }`}>
+                              {effectiveEvent.statusLabel}
+                            </Badge>
+                            {effectiveEvent.status === "flagged" && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setVerifiedFlaggedEvents(prev => [...prev, event.id])
+                                }}
+                                className="h-6 px-2 text-xs text-red-700 border-red-300 hover:bg-red-50"
+                              >
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                                Verify and sign
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
