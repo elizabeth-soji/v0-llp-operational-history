@@ -110,7 +110,7 @@ const timelineEvents = [
     status: "flagged" as const,
     statusLabel: "AI Findings",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
-    imagePreview: "/documents/sia-llp-status.jpg",
+    imagePreview: "/documents/llp-status-report.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
       { label: "Date", value: "21st June 2020", highlight: true },
