@@ -242,22 +242,16 @@ export default function F2EngineRecordsPage() {
       }
     }
     
-    // Check if flagged event was manually verified
-    if (event.status === "flagged" && verifiedFlaggedEvents.includes(event.id)) {
-      return {
-        ...event,
-        status: "verified" as const,
-        statusLabel: "Verified",
-        dotColor: "bg-emerald-500"
-      }
-    }
-    
     if (event.status !== "flagged") return event
     
     const discrepancyFields = event.keyData.filter(k => k.status === "discrepancy")
     const allResolved = discrepancyFields.every(field => isFieldResolved(event.id, field.label))
+    const isVerifiedAndSigned = verifiedFlaggedEvents.includes(event.id)
     
-    if (allResolved && discrepancyFields.length > 0) {
+    // Only mark as verified if BOTH conditions are met:
+    // 1. All discrepancy fields are resolved (green)
+    // 2. The event has been verified and signed via the modal
+    if (allResolved && discrepancyFields.length > 0 && isVerifiedAndSigned) {
       return {
         ...event,
         status: "verified" as const,
