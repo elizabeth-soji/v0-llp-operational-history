@@ -108,9 +108,9 @@ const timelineEvents = [
     description: "Life Limited Part status and remaining life calculation at the time of removal from engine. Data discrepancy detected in part/serial numbers.",
     documents: 1,
     status: "flagged" as const,
-    statusLabel: "Issues Found",
+    statusLabel: "AI Findings",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
-    imagePreview: "/documents/sia-llp-status.jpg",
+    imagePreview: "/documents/llp-status-report.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
       { label: "Date", value: "21st June 2020", highlight: true },
@@ -200,6 +200,7 @@ export default function F2EngineRecordsPage() {
   const [selectedEvent, setSelectedEvent] = useState<string>("operational-history")
   const [resolvedDiscrepancies, setResolvedDiscrepancies] = useState<Record<string, string[]>>({})
   const [verifiedPendingEvents, setVerifiedPendingEvents] = useState<string[]>([])
+  const [verifiedFlaggedEvents, setVerifiedFlaggedEvents] = useState<string[]>([])
   const [discrepancyDialog, setDiscrepancyDialog] = useState<{
     open: boolean
     eventId: string
@@ -210,6 +211,10 @@ export default function F2EngineRecordsPage() {
     event: typeof timelineEvents[0] | null
   }>({ open: false, event: null })
   const [pdfPreviewDialog, setPdfPreviewDialog] = useState<{
+    open: boolean
+    event: typeof timelineEvents[0] | null
+  }>({ open: false, event: null })
+  const [flaggedReviewDialog, setFlaggedReviewDialog] = useState<{
     open: boolean
     event: typeof timelineEvents[0] | null
   }>({ open: false, event: null })
@@ -225,7 +230,7 @@ export default function F2EngineRecordsPage() {
     return resolvedDiscrepancies[eventId]?.includes(label) || false
   }
 
-  // Get the effective status of an event (considering resolved discrepancies and verified pending)
+  // Get the effective status of an event (considering resolved discrepancies and verified pending/flagged)
   const getEffectiveEventStatus = (event: typeof timelineEvents[0]) => {
     // Check if pending event was manually verified
     if (event.status === "pending" && verifiedPendingEvents.includes(event.id)) {
@@ -241,7 +246,11 @@ export default function F2EngineRecordsPage() {
     
     const discrepancyFields = event.keyData.filter(k => k.status === "discrepancy")
     const allResolved = discrepancyFields.every(field => isFieldResolved(event.id, field.label))
+    const isVerifiedAndSigned = verifiedFlaggedEvents.includes(event.id)
     
+    // Mark as verified if EITHER condition is met:
+    // 1. All discrepancy fields are manually resolved (green) - auto-verifies the status
+    // 2. User clicked "Verify and sign" which resolves all fields and marks as verified
     if (allResolved && discrepancyFields.length > 0) {
       return {
         ...event,
@@ -290,6 +299,32 @@ export default function F2EngineRecordsPage() {
     setPendingReviewDialog({ open: true, event })
   }
 
+  // Handle verifying a flagged event - also resolves all discrepancy fields
+  const handleVerifyFlagged = () => {
+    if (flaggedReviewDialog.event) {
+      const event = flaggedReviewDialog.event
+      // Resolve all discrepancy fields for this event
+      const discrepancyFields = event.keyData.filter(k => k.status === "discrepancy")
+      const newResolved: Record<string, string[]> = { ...resolvedDiscrepancies }
+      discrepancyFields.forEach(field => {
+        if (!newResolved[event.id]) {
+          newResolved[event.id] = []
+        }
+        if (!newResolved[event.id].includes(field.label)) {
+          newResolved[event.id].push(field.label)
+        }
+      })
+      setResolvedDiscrepancies(newResolved)
+      setVerifiedFlaggedEvents(prev => [...prev, event.id])
+      setFlaggedReviewDialog({ open: false, event: null })
+    }
+  }
+
+  // Open flagged review dialog
+  const openFlaggedReviewDialog = (event: typeof timelineEvents[0]) => {
+    setFlaggedReviewDialog({ open: true, event })
+  }
+
   // Open PDF preview dialog
   const openPdfPreviewDialog = (event: typeof timelineEvents[0]) => {
     setPdfPreviewDialog({ open: true, event })
@@ -309,7 +344,7 @@ export default function F2EngineRecordsPage() {
                 </Button>
               </Link>
               <div className="text-sm text-slate-500">
-                IATA Binder / F2. Engine Records 2 / F 001. Back-to-Birth Documentation
+                IATA Binder / F2. Engine Records 2 / F 002. Back-to-Birth Documentation
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -458,12 +493,10 @@ export default function F2EngineRecordsPage() {
                     <p className="text-slate-600">{selectedEventData.description}</p>
                   </div>
                   {selectedEventData.viewerLink && (
-                    <Link href={selectedEventData.viewerLink}>
-                      <Button className="gap-2">
-                        <Eye className="h-4 w-4" />
-                        View Document
-                      </Button>
-                    </Link>
+                    <Button className="gap-2" onClick={() => openPdfPreviewDialog(selectedEventData)}>
+                      <Eye className="h-4 w-4" />
+                      View Document
+                    </Button>
                   )}
                 </div>
 
@@ -498,6 +531,17 @@ export default function F2EngineRecordsPage() {
                                 variant="outline"
                                 onClick={() => openPendingReviewDialog(selectedEventData)}
                                 className="h-6 px-2 text-xs text-amber-700 border-amber-300 hover:bg-amber-50"
+                              >
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                                Verify and sign
+                              </Button>
+                            )}
+                            {effectiveSelectedEvent.status === "flagged" && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openFlaggedReviewDialog(selectedEventData)}
+                                className="h-6 px-2 text-xs text-red-700 border-red-300 hover:bg-red-50"
                               >
                                 <CheckCircle2 className="h-3 w-3 mr-1" />
                                 Verify and sign
@@ -555,7 +599,7 @@ export default function F2EngineRecordsPage() {
                             onClick={() => isClickable && openDiscrepancyDialog(selectedEventData.id, item)}
                             className={`flex justify-between items-center p-3 rounded-lg ${
                               effectiveStatus === "discrepancy"
-                                ? "bg-amber-50 border border-amber-200 cursor-pointer hover:bg-amber-100 transition-colors"
+                                ? "bg-red-50 border border-red-200 cursor-pointer hover:bg-red-100 transition-colors"
                                 : effectiveStatus === "success"
                                   ? "bg-emerald-50 border border-emerald-200"
                                   : item.highlight
@@ -565,7 +609,7 @@ export default function F2EngineRecordsPage() {
                           >
                             <span className={`text-sm ${
                               effectiveStatus === "discrepancy"
-                                ? "text-amber-800 font-medium"
+                                ? "text-red-800 font-medium"
                                 : effectiveStatus === "success"
                                   ? "text-emerald-800 font-medium"
                                   : item.highlight
@@ -575,10 +619,10 @@ export default function F2EngineRecordsPage() {
                               {effectiveStatus === "discrepancy" && (
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold cursor-pointer mr-2">!</span>
+                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold cursor-pointer mr-2">!</span>
                                   </TooltipTrigger>
-                                  <TooltipContent side="top" className="bg-amber-600 text-white">
-                                    Click to review discrepancy
+                                  <TooltipContent side="top" className="bg-red-600 text-white">
+                                    Click to review AI finding
                                   </TooltipContent>
                                 </Tooltip>
                               )}
@@ -589,7 +633,7 @@ export default function F2EngineRecordsPage() {
                             </span>
                             <span className={`text-sm font-mono ${
                               effectiveStatus === "discrepancy"
-                                ? "font-semibold text-amber-700"
+                                ? "font-semibold text-red-700"
                                 : effectiveStatus === "success"
                                   ? "font-semibold text-emerald-700"
                                   : item.highlight
@@ -663,12 +707,10 @@ export default function F2EngineRecordsPage() {
                           <h3 className="font-semibold text-slate-700">Documentation ({selectedEventData.documents})</h3>
                         </div>
                         {selectedEventData.viewerLink && (
-                          <Link href={selectedEventData.viewerLink}>
-                            <Button size="sm" variant="outline" className="gap-1">
-                              <ExternalLink className="h-3 w-3" />
-                              Open Full View
-                            </Button>
-                          </Link>
+                          <Button size="sm" variant="outline" className="gap-1" onClick={() => openPdfPreviewDialog(selectedEventData)}>
+                            <ExternalLink className="h-3 w-3" />
+                            Open Full View
+                          </Button>
                         )}
                       </div>
                       <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-100">
@@ -736,7 +778,7 @@ export default function F2EngineRecordsPage() {
             </div>
           )}
 
-          <DialogFooter className="flex gap-2 sm:gap-0">
+          <DialogFooter className="flex gap-2">
             <Button variant="outline" onClick={handleKeepFlagged}>
               Keep Flagged
             </Button>
@@ -807,11 +849,72 @@ export default function F2EngineRecordsPage() {
             </div>
           )}
 
-          <DialogFooter className="flex gap-2 sm:gap-0">
+          <DialogFooter className="flex gap-2">
             <Button variant="outline" onClick={() => setPendingReviewDialog({ open: false, event: null })}>
               Cancel
             </Button>
 <Button onClick={handleVerifyPending} className="bg-emerald-600 hover:bg-emerald-700">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Verify and sign
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Flagged Review Dialog */}
+      <Dialog open={flaggedReviewDialog.open} onOpenChange={(open) => !open && setFlaggedReviewDialog({ open: false, event: null })}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-red-500" />
+              Review Flagged Document
+            </DialogTitle>
+            <DialogDescription>
+              Review the document with issues and mark it as verified after resolving findings.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {flaggedReviewDialog.event && (
+            <div className="py-4">
+              {/* Document Information */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
+                <h4 className="font-semibold text-slate-900 mb-2">{flaggedReviewDialog.event.title}</h4>
+                <p className="text-sm text-slate-600 mb-3">{flaggedReviewDialog.event.description}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {flaggedReviewDialog.event.keyData.slice(0, 4).map((item, idx) => (
+                    <div key={idx}>
+                      <p className="text-xs text-slate-500">{item.label}</p>
+                      <p className="font-mono text-sm font-semibold text-slate-900">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Document Preview */}
+              <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
+                <div className="bg-slate-100 px-4 py-2 border-b border-slate-200">
+                  <span className="text-sm font-medium text-slate-700">Document Preview</span>
+                </div>
+                <div className="bg-white p-4 h-64 flex items-center justify-center">
+                  <img 
+                    src="/documents/llp-status-report.jpg" 
+                    alt="LLP Status Report"
+                    className="max-h-full max-w-full object-contain rounded border border-slate-200"
+                  />
+                </div>
+              </div>
+
+              <p className="text-sm text-slate-600">
+                Verify that all issues have been reviewed and addressed before marking as verified.
+              </p>
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2">
+            <Button variant="outline" onClick={() => setFlaggedReviewDialog({ open: false, event: null })}>
+              Cancel
+            </Button>
+            <Button onClick={handleVerifyFlagged} className="bg-emerald-600 hover:bg-emerald-700">
               <CheckCircle2 className="h-4 w-4 mr-2" />
               Verify and sign
             </Button>
