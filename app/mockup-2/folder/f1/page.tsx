@@ -131,7 +131,7 @@ export default function FolderF1Page() {
                   {[
                     {
                       code: "F 008",
-                      name: "Back-to-Birth Records",
+                      name: "Life Limited Parts",
                       progress: 100,
                       documents: 5,
                       lastUpdate: "30 mins ago",

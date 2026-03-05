@@ -137,7 +137,7 @@ export default function FolderF2Page() {
                       lastUpdate: "30 mins ago",
                       assignee: "Mike J.",
                       party: "CAMO",
-                      link: "/mockup-2/folder/f2/f007",
+                      link: "/mockup-2/folder/f2/f008",
                     },
                   ].map((subfolder) => (
                     <Card key={subfolder.code} className="hover:shadow-md transition-all bg-white border-slate-200">
