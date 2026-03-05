@@ -493,12 +493,10 @@ export default function F2EngineRecordsPage() {
                     <p className="text-slate-600">{selectedEventData.description}</p>
                   </div>
                   {selectedEventData.viewerLink && (
-                    <Link href={selectedEventData.viewerLink}>
-                      <Button className="gap-2">
-                        <Eye className="h-4 w-4" />
-                        View Document
-                      </Button>
-                    </Link>
+                    <Button className="gap-2" onClick={() => openPdfPreviewDialog(selectedEventData)}>
+                      <Eye className="h-4 w-4" />
+                      View Document
+                    </Button>
                   )}
                 </div>
 
@@ -709,12 +707,10 @@ export default function F2EngineRecordsPage() {
                           <h3 className="font-semibold text-slate-700">Documentation ({selectedEventData.documents})</h3>
                         </div>
                         {selectedEventData.viewerLink && (
-                          <Link href={selectedEventData.viewerLink}>
-                            <Button size="sm" variant="outline" className="gap-1">
-                              <ExternalLink className="h-3 w-3" />
-                              Open Full View
-                            </Button>
-                          </Link>
+                          <Button size="sm" variant="outline" className="gap-1" onClick={() => openPdfPreviewDialog(selectedEventData)}>
+                            <ExternalLink className="h-3 w-3" />
+                            Open Full View
+                          </Button>
                         )}
                       </div>
                       <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-100">
