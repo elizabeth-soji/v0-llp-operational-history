@@ -248,10 +248,10 @@ export default function F2EngineRecordsPage() {
     const allResolved = discrepancyFields.every(field => isFieldResolved(event.id, field.label))
     const isVerifiedAndSigned = verifiedFlaggedEvents.includes(event.id)
     
-    // Only mark as verified if BOTH conditions are met:
-    // 1. All discrepancy fields are resolved (green)
-    // 2. The event has been verified and signed via the modal
-    if (allResolved && discrepancyFields.length > 0 && isVerifiedAndSigned) {
+    // Mark as verified if EITHER condition is met:
+    // 1. All discrepancy fields are manually resolved (green) - auto-verifies the status
+    // 2. User clicked "Verify and sign" which resolves all fields and marks as verified
+    if (allResolved && discrepancyFields.length > 0) {
       return {
         ...event,
         status: "verified" as const,
@@ -299,10 +299,23 @@ export default function F2EngineRecordsPage() {
     setPendingReviewDialog({ open: true, event })
   }
 
-  // Handle verifying a flagged event
+  // Handle verifying a flagged event - also resolves all discrepancy fields
   const handleVerifyFlagged = () => {
     if (flaggedReviewDialog.event) {
-      setVerifiedFlaggedEvents(prev => [...prev, flaggedReviewDialog.event!.id])
+      const event = flaggedReviewDialog.event
+      // Resolve all discrepancy fields for this event
+      const discrepancyFields = event.keyData.filter(k => k.status === "discrepancy")
+      const newResolved: Record<string, string[]> = { ...resolvedDiscrepancies }
+      discrepancyFields.forEach(field => {
+        if (!newResolved[event.id]) {
+          newResolved[event.id] = []
+        }
+        if (!newResolved[event.id].includes(field.label)) {
+          newResolved[event.id].push(field.label)
+        }
+      })
+      setResolvedDiscrepancies(newResolved)
+      setVerifiedFlaggedEvents(prev => [...prev, event.id])
       setFlaggedReviewDialog({ open: false, event: null })
     }
   }
