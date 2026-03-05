@@ -17,102 +17,85 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
+// Engine info
+const engineInfo = {
+  serialNumber: "963482",
+  model: "CFM56-7B26E",
+  tsn: "28,450",
+  csn: "15200",
+  statusDate: "15th Mar 2022",
+}
+
 // LLP data for the engine
 const llpData = [
   {
     id: 1,
-    itemNumber: "F008-001",
-    nomenclature: "DISK, LPT STG 4",
+    item: 1,
+    description: "LPT STAGE 2 DISK",
     partNumber: "340-301-301-0",
-    serialNumber: "PA877995",
-    position: "LPT4",
-    assignee: "Sarah C.",
-    party: "MRO",
-    status: "In Progress",
+    serialNumber: "PA878112",
+    tsn: "28,450",
+    cycleTotal: "15200",
+    cycleLimit: "25000",
+    cycleRemaining: "9800",
+    status: "Completed",
+    aiFindings: "No",
     link: "/mockup-2/folder/f2/f008",
   },
   {
     id: 2,
-    itemNumber: "F008-002",
-    nomenclature: "DISK, LPT STG 3",
-    partNumber: "340-301-201-0",
-    serialNumber: "PA854221",
-    position: "LPT3",
-    assignee: "Sarah C.",
-    party: "MRO",
-    status: "Completed",
+    item: 2,
+    description: "LPT STAGE 1 DISK",
+    partNumber: "340-301-001-0",
+    serialNumber: "PA871755",
+    tsn: "28450",
+    cycleTotal: "15200",
+    cycleLimit: "25000",
+    cycleRemaining: "9800",
+    status: "In Progress",
+    aiFindings: "No",
     link: "/mockup-2/folder/f2/f008",
   },
   {
     id: 3,
-    itemNumber: "F008-003",
-    nomenclature: "DISK, LPT STG 2",
-    partNumber: "340-301-101-0",
-    serialNumber: "PA812456",
-    position: "LPT2",
-    assignee: "John D.",
-    party: "CAMO",
-    status: "Pending",
+    item: 3,
+    description: "LPT STAGE 3 DISK",
+    partNumber: "340-301-201-0",
+    serialNumber: "PA822445",
+    tsn: "28450",
+    cycleTotal: "15200",
+    cycleLimit: "25000",
+    cycleRemaining: "9800",
+    status: "In Progress",
+    aiFindings: "Yes",
     link: "/mockup-2/folder/f2/f008",
   },
   {
     id: 4,
-    itemNumber: "F008-004",
-    nomenclature: "DISK, LPT STG 1",
-    partNumber: "340-300-401-0",
-    serialNumber: "PA798123",
-    position: "LPT1",
-    assignee: "John D.",
-    party: "CAMO",
-    status: "Completed",
+    item: 4,
+    description: "LPT STAGE 4 DISK",
+    partNumber: "340-301-301-0",
+    serialNumber: "PA878001",
+    tsn: "28,450",
+    cycleTotal: "15200",
+    cycleLimit: "25000",
+    cycleRemaining: "9800",
+    status: "Not Started",
+    aiFindings: "No",
     link: "/mockup-2/folder/f2/f008",
   },
   {
     id: 5,
-    itemNumber: "F008-005",
-    nomenclature: "DISK, HPT STG 2",
-    partNumber: "335-201-301-0",
-    serialNumber: "HP445621",
-    position: "HPT2",
-    assignee: "Mike T.",
-    party: "MRO",
-    status: "In Progress",
-    link: "/mockup-2/folder/f2/f008",
-  },
-  {
-    id: 6,
-    itemNumber: "F008-006",
-    nomenclature: "DISK, HPT STG 1",
-    partNumber: "335-201-201-0",
-    serialNumber: "HP412897",
-    position: "HPT1",
-    assignee: "Mike T.",
-    party: "MRO",
-    status: "Completed",
-    link: "/mockup-2/folder/f2/f008",
-  },
-  {
-    id: 7,
-    itemNumber: "F008-007",
-    nomenclature: "DISK, HPC STG 9",
-    partNumber: "330-109-301-0",
-    serialNumber: "HC998754",
-    position: "HPC9",
-    assignee: "Sarah C.",
-    party: "MRO",
-    status: "In Progress",
-    link: "/mockup-2/folder/f2/f008",
-  },
-  {
-    id: 8,
-    itemNumber: "F008-008",
-    nomenclature: "SHAFT, HPT",
-    partNumber: "335-401-101-0",
-    serialNumber: "SH224561",
-    position: "HPT",
-    assignee: "John D.",
-    party: "CAMO",
-    status: "Pending",
+    item: 5,
+    description: "LPT ROTOR SUPPORT",
+    partNumber: "340-301-702-0",
+    serialNumber: "DF917330",
+    tsn: "28450",
+    cycleTotal: "15200",
+    cycleLimit: "25000",
+    cycleRemaining: "9800",
+    status: "Not Started",
+    aiFindings: "No",
     link: "/mockup-2/folder/f2/f008",
   },
 ]
@@ -169,15 +152,14 @@ export default function FolderF2Page() {
 
   const filteredLLPs = llpData.filter(
     (llp) =>
-      llp.nomenclature.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      llp.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       llp.partNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      llp.serialNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      llp.itemNumber.toLowerCase().includes(searchQuery.toLowerCase())
+      llp.serialNumber.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const completedCount = llpData.filter((l) => getEffectiveStatus(l) === "Completed").length
   const inProgressCount = llpData.filter((l) => getEffectiveStatus(l) === "In Progress").length
-  const pendingCount = llpData.filter((l) => getEffectiveStatus(l) === "Pending").length
+  const notStartedCount = llpData.filter((l) => getEffectiveStatus(l) === "Not Started").length
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -185,22 +167,18 @@ export default function FolderF2Page() {
         return <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-100">Completed</Badge>
       case "In Progress":
         return <Badge className="bg-sky-100 text-sky-700 border-sky-200 hover:bg-sky-100">In Progress</Badge>
-      case "Pending":
-        return <Badge className="bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100">Pending</Badge>
+      case "Not Started":
+        return <Badge className="bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-100">Not Started</Badge>
       default:
         return <Badge variant="secondary">{status}</Badge>
     }
   }
 
-  const getPartyBadge = (party: string) => {
-    switch (party) {
-      case "MRO":
-        return <span className="text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">MRO</span>
-      case "CAMO":
-        return <span className="text-xs font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded">CAMO</span>
-      default:
-        return <span className="text-xs font-semibold text-slate-600 bg-slate-50 px-2 py-0.5 rounded">{party}</span>
+  const getAiFindingsBadge = (aiFindings: string) => {
+    if (aiFindings === "Yes") {
+      return <Badge className="bg-amber-100 text-amber-700 border-amber-200">Yes</Badge>
     }
+    return <Badge className="bg-slate-100 text-slate-500 border-slate-200">No</Badge>
   }
 
   return (
@@ -296,10 +274,10 @@ export default function FolderF2Page() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-amber-500" />
-                      <span className="text-sm text-slate-600">Pending</span>
+                      <div className="w-2 h-2 rounded-full bg-slate-400" />
+                      <span className="text-sm text-slate-600">Not Started</span>
                     </div>
-                    <span className="text-sm font-semibold text-amber-600">{pendingCount}</span>
+                    <span className="text-sm font-semibold text-slate-600">{notStartedCount}</span>
                   </div>
                   <div className="border-t border-slate-100 pt-3 mt-3">
                     <div className="flex items-center justify-between">
@@ -344,7 +322,7 @@ export default function FolderF2Page() {
 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-slate-900">Life Limited Parts (LLPs)</h2>
+                  <h2 className="text-xl font-bold text-slate-900">Engine Life Limited Parts List</h2>
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -353,7 +331,7 @@ export default function FolderF2Page() {
                         placeholder="Search by serial number, part number, or description..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10 w-96 bg-white border-slate-200"
+                        className="pl-10 w-80 bg-white border-slate-200"
                       />
                     </div>
                     <Button variant="outline" size="sm" className="gap-2">
@@ -363,79 +341,127 @@ export default function FolderF2Page() {
                   </div>
                 </div>
 
+                {/* Engine Info Header */}
+                <div className="border border-slate-200 rounded-lg mb-4 overflow-hidden">
+                  <div className="grid grid-cols-6 gap-px bg-slate-200">
+                    <div className="bg-slate-50 px-4 py-2">
+                      <p className="text-xs text-slate-500">Engine Serial Number</p>
+                      <p className="font-semibold text-slate-900">{engineInfo.serialNumber}</p>
+                    </div>
+                    <div className="bg-slate-50 px-4 py-2">
+                      <p className="text-xs text-slate-500">Engine Model</p>
+                      <p className="font-semibold text-slate-900">{engineInfo.model}</p>
+                    </div>
+                    <div className="bg-slate-50 px-4 py-2">
+                      <p className="text-xs text-slate-500">Engine TSN</p>
+                      <p className="font-semibold text-slate-900">{engineInfo.tsn}</p>
+                    </div>
+                    <div className="bg-slate-50 px-4 py-2">
+                      <p className="text-xs text-slate-500">Engine CSN</p>
+                      <p className="font-semibold text-slate-900">{engineInfo.csn}</p>
+                    </div>
+                    <div className="bg-slate-50 px-4 py-2">
+                      <p className="text-xs text-slate-500">Status Date</p>
+                      <p className="font-semibold text-slate-900">{engineInfo.statusDate}</p>
+                    </div>
+                    <div className="bg-white px-4 py-2"></div>
+                  </div>
+                </div>
+
                 {/* Table */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto border border-slate-200 rounded-lg">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-slate-200">
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Item #
+                      <tr className="bg-slate-50 border-b border-slate-200">
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          Item
                         </th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Nomenclature
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          Description
                         </th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Part Number
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          P/N
                         </th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Serial Number
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          S/N
                         </th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Position
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          TSN
                         </th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Assignee
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          Cycle Total
                         </th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          Cycle Limit
+                        </th>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          Cycle Remaining
+                        </th>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
                           Status
+                        </th>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          AI Findings
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredLLPs.map((llp) => {
                         const effectiveStatus = getEffectiveStatus(llp)
-                        const isPending = effectiveStatus === "Pending"
                         
                         return (
                           <tr
                             key={llp.id}
                             className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors"
                           >
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
-                                <span className="text-sm font-medium text-slate-900">{llp.itemNumber}</span>
+                                <span className="text-sm font-medium text-slate-900">{llp.item}</span>
                               </Link>
                             </td>
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
-                                <span className="text-sm text-slate-700">{llp.nomenclature}</span>
+                                <span className="text-sm font-medium text-slate-700">{llp.description}</span>
                               </Link>
                             </td>
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
                                 <span className="text-sm font-mono text-slate-600">{llp.partNumber}</span>
                               </Link>
                             </td>
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
                                 <span className="text-sm font-mono text-slate-600">{llp.serialNumber}</span>
                               </Link>
                             </td>
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
-                                <span className="text-sm text-slate-600">{llp.position}</span>
+                                <span className="text-sm text-slate-600">{llp.tsn}</span>
                               </Link>
                             </td>
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
-                                <div className="flex items-center gap-2">
-                                  {getPartyBadge(llp.party)}
-                                </div>
+                                <span className="text-sm text-slate-600">{llp.cycleTotal}</span>
                               </Link>
                             </td>
-                            <td className="py-4 px-4">
+                            <td className="py-3 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm text-slate-600">{llp.cycleLimit}</span>
+                              </Link>
+                            </td>
+                            <td className="py-3 px-4">
+                              <Link href={llp.link} className="block">
+                                <span className="text-sm text-slate-600">{llp.cycleRemaining}</span>
+                              </Link>
+                            </td>
+                            <td className="py-3 px-4">
                               <Link href={llp.link} className="block">
                                 {getStatusBadge(effectiveStatus)}
+                              </Link>
+                            </td>
+                            <td className="py-3 px-4">
+                              <Link href={llp.link} className="block">
+                                {getAiFindingsBadge(llp.aiFindings)}
                               </Link>
                             </td>
                           </tr>
