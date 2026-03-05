@@ -265,7 +265,7 @@ export default function Mockup2() {
     {
       letter: "F1",
       name: "Engine Records 1",
-      progress: 98,
+      progress: 100,
       documents: 27,
       lastUpdate: "1 hour ago",
       color: "cyan",
