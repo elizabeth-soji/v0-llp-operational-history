@@ -142,13 +142,13 @@ export default function FolderF2Page() {
     setPdfDialog({ open: true, llp })
   }
 
-  const folderInfo = {
-    letter: "F2",
-    name: "Engine Records 2",
-    progress: 65,
-    status: "in-progress",
-    documents: 32,
-  }
+const folderInfo = {
+  letter: "F2",
+  name: "Engine Records 2",
+  progress: 68,
+  status: "in-progress",
+  documents: 32,
+}
 
   const filteredLLPs = llpData.filter(
     (llp) =>
@@ -293,11 +293,11 @@ export default function FolderF2Page() {
                 <div className="mt-6 pt-6 border-t border-slate-100">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-slate-900">
-                      {Math.round((completedCount / llpData.length) * 100)}%
+                      {folderInfo.progress}%
                     </div>
                     <div className="text-sm text-slate-500">Completion</div>
                     <div className="mt-3">
-                      <Progress value={(completedCount / llpData.length) * 100} className="h-2" />
+                      <Progress value={folderInfo.progress} className="h-2" />
                     </div>
                   </div>
                 </div>
