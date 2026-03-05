@@ -163,7 +163,7 @@ export default function FolderF1Page() {
     letter: "F1",
     name: "Engine Records 1",
     progress: 65,
-    status: "in-progress",
+    status: "in-progress" as const,
     documents: 32,
   }
 
