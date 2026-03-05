@@ -394,8 +394,27 @@ export default function F1EngineRecordsPage() {
                           ? "bg-slate-50 -mx-2 px-2 py-2 rounded-lg border border-slate-200" 
                           : ""
                       }`}>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-slate-900">{event.title.split(" – ")[0].split(" (")[0]}</span>
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <p className="text-lg font-bold text-slate-900 mb-0.5">{event.date}</p>
+                            <p className="font-semibold text-slate-700">{event.title.split(" – ")[0].split(" (")[0]}</p>
+                          </div>
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            event.category === "Maintenance" 
+                              ? "bg-blue-100 text-blue-700" 
+                              : event.category === "Operations"
+                                ? "bg-purple-100 text-purple-700"
+                                : "bg-cyan-100 text-cyan-700"
+                          }`}>
+                            {event.category}
+                          </span>
+                        </div>
+                        <p className="text-sm text-slate-600 line-clamp-2 mb-2">{event.description}</p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <FileText className="h-3 w-3" />
+                            <span>{event.documents} document</span>
+                          </div>
                           <Badge className={`text-[10px] px-1.5 py-0 ${
                             effectiveEvent.status === "verified" 
                               ? "bg-emerald-100 text-emerald-700 border-emerald-200" 
@@ -405,16 +424,6 @@ export default function F1EngineRecordsPage() {
                           }`}>
                             {effectiveEvent.statusLabel}
                           </Badge>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
-                          <span>{event.date}</span>
-                          <span className="text-slate-300">|</span>
-                          <span className="text-slate-600 font-medium">{event.category}</span>
-                        </div>
-                        <p className="text-sm text-slate-600 line-clamp-2">{event.description}</p>
-                        <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
-                          <FileText className="h-3 w-3" />
-                          <span>{event.documents} document</span>
                         </div>
                       </div>
                     </div>
