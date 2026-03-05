@@ -40,7 +40,7 @@ const timelineEvents = [
     status: "verified" as const,
     statusLabel: "Verified",
     viewerLink: "/mockup-2/folder/f2/f008/viewer",
-    imagePreview: "/documents/magellan-llp-history.jpg",
+    imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
       { label: "LLP Part Number", value: "340-301-301-0", highlight: true },
       { label: "LLP Serial Number", value: "PA877995", highlight: true },
@@ -84,7 +84,7 @@ const timelineEvents = [
     status: "verified" as const,
     statusLabel: "Verified",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/arc",
-    imagePreview: "/documents/sia-auth-release-certificate.jpg",
+    imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
       { label: "Part Number", value: "340-301-301-0", highlight: true },
       { label: "Serial Number", value: "PA877995", highlight: true },
@@ -110,7 +110,7 @@ const timelineEvents = [
     status: "flagged" as const,
     statusLabel: "AI Findings",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
-    imagePreview: "/documents/llp-status-report.jpg",
+    imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
       { label: "Date", value: "21st June 2020", highlight: true },
@@ -138,7 +138,7 @@ const timelineEvents = [
     status: "verified" as const,
     statusLabel: "Verified",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/incident-clearance",
-    imagePreview: "/documents/sia-incident-clearance.jpg",
+    imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
       { label: "Date", value: "24th May 2020" },
       { label: "Period", value: "Manufacture to 24th May 2020" },
@@ -163,7 +163,7 @@ const timelineEvents = [
     status: "pending" as const,
     statusLabel: "Pending Review",
     viewerLink: "/mockup-2/folder/f2/f008/viewer/birth-record",
-    imagePreview: "/documents/sia-llps-birth.jpg",
+    imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
       { label: "Part Number", value: "340-301-301-0", highlight: true },
@@ -897,7 +897,7 @@ export default function F2EngineRecordsPage() {
                 </div>
                 <div className="bg-white p-4 h-64 flex items-center justify-center">
                   <img 
-                    src="/documents/llp-status-report.jpg" 
+                    src="/documents/f2-release-certificate.jpg" 
                     alt="LLP Status Report"
                     className="max-h-full max-w-full object-contain rounded border border-slate-200"
                   />
