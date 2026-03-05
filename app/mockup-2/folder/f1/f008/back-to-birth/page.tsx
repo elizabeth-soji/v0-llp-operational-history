@@ -32,18 +32,19 @@ const timelineEvents = [
   {
     id: "operational-history",
     title: "Operational History – ON / OFF Log",
-    date: "2 Feb 2022",
+    date: "Date Unknown",
+    verifiedDate: "20 Aug 2012",
     category: "Maintenance",
-    dotColor: "bg-emerald-500",
-    description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation.",
+    dotColor: "bg-red-500",
+    description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation. Data discrepancy detected.",
     documents: 1,
-    status: "verified" as const,
-    statusLabel: "Verified",
+    status: "flagged" as const,
+    statusLabel: "AI Findings",
     viewerLink: "/mockup-2/folder/f1/f008/viewer",
     imagePreview: "/documents/magellan-llp-history.jpg",
     keyData: [
-      { label: "LLP Part Number", value: "340-301-301-0", highlight: true },
-      { label: "LLP Serial Number", value: "PA877995", highlight: true },
+      { label: "LLP Part Number", value: "340-301-301-0", highlight: true, status: "discrepancy" },
+      { label: "LLP Serial Number", value: "PA877995", highlight: true, status: "discrepancy" },
       { label: "Engine Serial Number", value: "963481", highlight: true },
       { label: "Engine Model", value: "CFM56-7B26E", highlight: true },
       { label: "LLP TSN at Removal", value: "30562", highlight: true },
@@ -247,7 +248,8 @@ export default function F1EngineRecordsPage() {
         ...event,
         status: "verified" as const,
         statusLabel: "Verified",
-        dotColor: "bg-emerald-500"
+        dotColor: "bg-emerald-500",
+        date: (event as any).verifiedDate || event.date
       }
     }
     return event
