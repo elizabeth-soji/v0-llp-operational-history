@@ -130,16 +130,6 @@ export default function FolderF1Page() {
                 <div className="grid gap-4 md:grid-cols-2">
                   {[
                     {
-                      code: "F 007",
-                      name: "Life Limited Parts",
-                      progress: 98,
-                      documents: 5,
-                      lastUpdate: "1 hour ago",
-                      assignee: "Sarah C.",
-                      party: "MRO",
-                      link: "/mockup-2/folder/f1/f007",
-                    },
-                    {
                       code: "F 008",
                       name: "Back-to-Birth Records",
                       progress: 100,
