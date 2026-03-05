@@ -264,7 +264,7 @@ export default function Mockup2() {
     },
     {
       letter: "F1",
-      name: "Life-Long Parts",
+      name: "Engine Records 1",
       progress: 55,
       documents: 27,
       lastUpdate: "1 hour ago",

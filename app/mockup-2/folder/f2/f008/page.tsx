@@ -39,7 +39,7 @@ const timelineEvents = [
     documents: 1,
     status: "verified" as const,
     statusLabel: "Verified",
-    viewerLink: "/mockup-2/folder/f1/f008/viewer",
+    viewerLink: "/mockup-2/folder/f2/f008/viewer",
     imagePreview: "/documents/magellan-llp-history.jpg",
     keyData: [
       { label: "LLP Part Number", value: "340-301-301-0", highlight: true },
@@ -83,7 +83,7 @@ const timelineEvents = [
     documents: 1,
     status: "verified" as const,
     statusLabel: "Verified",
-    viewerLink: "/mockup-2/folder/f1/f008/viewer/arc",
+    viewerLink: "/mockup-2/folder/f2/f008/viewer/arc",
     imagePreview: "/documents/sia-auth-release-certificate.jpg",
     keyData: [
       { label: "Part Number", value: "340-301-301-0", highlight: true },
@@ -109,7 +109,7 @@ const timelineEvents = [
     documents: 1,
     status: "flagged" as const,
     statusLabel: "Issues Found",
-    viewerLink: "/mockup-2/folder/f1/f008/viewer/llp-status",
+    viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
     imagePreview: "/documents/sia-llp-status.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
@@ -137,7 +137,7 @@ const timelineEvents = [
     documents: 1,
     status: "verified" as const,
     statusLabel: "Verified",
-    viewerLink: "/mockup-2/folder/f1/f008/viewer/incident-clearance",
+    viewerLink: "/mockup-2/folder/f2/f008/viewer/incident-clearance",
     imagePreview: "/documents/sia-incident-clearance.jpg",
     keyData: [
       { label: "Date", value: "24th May 2020" },
@@ -162,7 +162,7 @@ const timelineEvents = [
     documents: 1,
     status: "pending" as const,
     statusLabel: "Pending Review",
-    viewerLink: "/mockup-2/folder/f1/f008/viewer/birth-record",
+    viewerLink: "/mockup-2/folder/f2/f008/viewer/birth-record",
     imagePreview: "/documents/sia-llps-birth.jpg",
     keyData: [
       { label: "Nomenclature", value: "LPT STAGE 4 DISK" },
@@ -196,7 +196,7 @@ function CrossCheckStatus({ status }: { status: "match" | "warning" | "missing" 
   return <AlertTriangle className="h-4 w-4 text-red-600" />
 }
 
-export default function F1EngineRecordsPage() {
+export default function F2EngineRecordsPage() {
   const [selectedEvent, setSelectedEvent] = useState<string>("operational-history")
   const [resolvedDiscrepancies, setResolvedDiscrepancies] = useState<Record<string, string[]>>({})
   const [verifiedPendingEvents, setVerifiedPendingEvents] = useState<string[]>([])
@@ -302,14 +302,14 @@ export default function F1EngineRecordsPage() {
         <nav className="sticky top-0 z-50 border-b bg-white px-6 py-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/mockup-2/folder/f1">
+              <Link href="/mockup-2/folder/f2">
                 <Button variant="ghost" size="sm">
                   <ChevronLeft className="mr-2 h-4 w-4" />
                   Back to Engine Records
                 </Button>
               </Link>
               <div className="text-sm text-slate-500">
-                IATA Binder / F1. Engine Records 1 / F 001. Back-to-Birth Documentation
+                IATA Binder / F2. Engine Records 2 / F 001. Back-to-Birth Documentation
               </div>
             </div>
             <div className="flex items-center gap-2">
