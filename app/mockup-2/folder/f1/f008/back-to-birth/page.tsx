@@ -354,15 +354,15 @@ export default function F1EngineRecordsPage() {
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">First installation:</span>
-                <span className="text-lg font-bold text-sky-900">29/12/2009</span>
+                <span className="text-lg font-bold text-sky-900">6/3/2020</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">Cycle date:</span>
-                <span className="text-lg font-bold text-sky-900">29/12/2011</span>
+                <span className="text-lg font-bold text-sky-900">21/12/2021</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">TT:</span>
-                <span className="text-lg font-bold text-sky-900">5000 hours</span>
+                <span className="text-lg font-bold text-sky-900">6899 hours</span>
               </div>
             </div>
           </div>
