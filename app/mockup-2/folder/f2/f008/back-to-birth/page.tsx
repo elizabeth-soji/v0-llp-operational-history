@@ -520,36 +520,11 @@ export default function F2EngineRecordsPage() {
                 </div>
               </div>
             </div>
-            
-            {/* Right: Compliance Score */}
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <div className="text-xs text-slate-500 mb-1">Traceability Compliance</div>
-                <div className="flex items-center gap-2">
-                  <div className="w-32 h-2 bg-slate-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.round((timelineEvents.filter(e => getEffectiveEventStatus(e).status === "verified").length / timelineEvents.length) * 100)}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-bold text-slate-900">
-                    {Math.round((timelineEvents.filter(e => getEffectiveEventStatus(e).status === "verified").length / timelineEvents.length) * 100)}%
-                  </span>
-                </div>
-              </div>
-              
-              <div className="h-8 w-px bg-slate-200" />
-              
-              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span className="text-sm font-medium text-emerald-700">Cross-check: {matchCount}/{crossCheckVariables.length} matched</span>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* Main Content - Timeline & Detail Panel */}
-        <div className="flex h-[calc(100vh-300px)]">
+        <div className="flex h-[calc(100vh-220px)]">
           {/* Left: Timeline */}
           <div className="w-[480px] border-r bg-white overflow-y-auto">
             <div className="p-4">
