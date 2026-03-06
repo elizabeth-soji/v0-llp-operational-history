@@ -353,6 +353,14 @@ export default function F1EngineRecordsPage() {
                 <span className="text-lg font-bold text-sky-900">DISK, LPT STG 4</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">First installation:</span>
+                <span className="text-lg font-bold text-sky-900">29/12/2009</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">Cycle date:</span>
+                <span className="text-lg font-bold text-sky-900">29/12/2011</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">TT:</span>
                 <span className="text-lg font-bold text-sky-900">5000 hours</span>
               </div>
