@@ -420,15 +420,15 @@ export default function F2EngineRecordsPage() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">PN:</span>
-                <span className="text-lg font-bold text-sky-900 font-mono">340-301-301-0</span>
+                <span className="text-lg font-bold text-sky-900 font-mono">1864M90P04</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">SN:</span>
-                <span className="text-lg font-bold text-sky-900 font-mono">PA877995</span>
+                <span className="text-lg font-bold text-sky-900 font-mono">TMT1AD99</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">Nomenclature:</span>
-                <span className="text-lg font-bold text-sky-900">DISK, LPT STG 4</span>
+                <span className="text-lg font-bold text-sky-900">SHAFT, REAR HPT</span>
               </div>
             </div>
           </div>
