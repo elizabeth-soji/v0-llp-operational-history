@@ -152,10 +152,9 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/incident-clearance",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Date", value: "30th November 2016" },
-      { label: "Period", value: "Manufacture to 30th November 2016" },
+      { label: "Document Date", value: "30th Nov 2016", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
-      { label: "Engine Model", value: "CFM56-7B", highlight: true },
+      { label: "Engine Model", value: "CFM56-7BE", highlight: true },
     ],
     parties: [
       { name: "Lufthansa Technik AG", role: "MRO Provider" },
