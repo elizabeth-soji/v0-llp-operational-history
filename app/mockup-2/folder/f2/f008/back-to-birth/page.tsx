@@ -131,8 +131,8 @@ const timelineEvents = [
       { label: "Period", value: "2nd Dec 2016 to 8th May 2019", highlight: true },
       { label: "Engine TSN", value: "43616", highlight: true },
       { label: "Engine CSN", value: "24915", highlight: true },
-      { label: "2nd Dec 2016 - Engine TSN", value: "37899", highlight: true },
-      { label: "2nd Dec 2016 - Engine CSN", value: "20784", highlight: true },
+      { label: "Engine TSN", value: "37899", highlight: true },
+      { label: "Engine CSN", value: "20784", highlight: true },
     ],
     parties: [
       { name: "GE Aviation", role: "MRO Provider" },
