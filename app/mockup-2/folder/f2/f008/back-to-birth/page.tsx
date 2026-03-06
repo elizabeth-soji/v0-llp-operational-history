@@ -415,7 +415,10 @@ export default function F2EngineRecordsPage() {
               <h1 className="text-2xl font-bold text-slate-900">
                 Back-to-Birth Records
               </h1>
-              <p className="text-slate-600 mt-1">LLP Traceability Timeline</p>
+              <div className="flex items-center gap-3 mt-1">
+                <p className="text-slate-600">LLP Traceability Timeline</p>
+                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Date ingested: 6th March 2026</span>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
