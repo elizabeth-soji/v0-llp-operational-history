@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import {
   Dialog,
@@ -524,6 +525,21 @@ export default function F1EngineRecordsPage() {
                           }`}>
                             {effectiveEvent.statusLabel}
                           </Badge>
+                        </div>
+                        {/* Manually verified checkbox */}
+                        <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+                          <Checkbox 
+                            id={`verified-${event.id}`} 
+                            checked={effectiveEvent.status === "verified"}
+                            disabled
+                            className="h-3.5 w-3.5 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+                          />
+                          <label 
+                            htmlFor={`verified-${event.id}`} 
+                            className={`text-xs ${effectiveEvent.status === "verified" ? "text-emerald-700 font-medium" : "text-slate-400"}`}
+                          >
+                            Manually verified
+                          </label>
                         </div>
                       </div>
                     </div>
