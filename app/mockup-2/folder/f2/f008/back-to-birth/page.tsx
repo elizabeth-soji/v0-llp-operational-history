@@ -230,12 +230,10 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/birth-record",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Nomenclature", value: "AFT SHFT" },
       { label: "Part Number", value: "1864M90P04", highlight: true },
       { label: "Serial Number", value: "TMT1AD99", highlight: true },
-      { label: "Manufacturer", value: "GE Aviation" },
-      { label: "Manufacturing Date", value: "29 Dec 2008" },
-      { label: "Manufacturing Location", value: "USA" },
+      { label: "Status", value: "Manufactured", highlight: true },
+      { label: "Date", value: "29th Dec 2008", highlight: true },
     ],
     parties: [
       { name: "GE Aviation", role: "Manufacturer" },
