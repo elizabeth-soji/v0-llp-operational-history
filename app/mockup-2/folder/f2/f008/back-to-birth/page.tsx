@@ -417,7 +417,7 @@ export default function F2EngineRecordsPage() {
               </h1>
               <div className="flex items-center gap-3 mt-1">
                 <p className="text-slate-600">LLP Traceability Timeline</p>
-                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Date ingested: 6th March 2026</span>
+                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Documents ingested: 6th March 2026</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
