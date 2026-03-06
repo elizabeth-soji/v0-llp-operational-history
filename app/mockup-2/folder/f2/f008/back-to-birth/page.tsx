@@ -203,10 +203,15 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Date", value: "20th August 2010", highlight: true },
       { label: "Part Number", value: "1864M90P04", highlight: true },
       { label: "Serial Number", value: "TMT1AD99", highlight: true },
+      { label: "LLP TSN", value: "0", highlight: true },
+      { label: "LLP CSN", value: "0", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
+      { label: "Engine Model", value: "CFM56-7BE", highlight: true },
+      { label: "Engine TSN", value: "24882", highlight: true },
+      { label: "Engine CSN", value: "12953", highlight: true },
+      { label: "Date", value: "20th Aug 2010", highlight: true },
     ],
     parties: [
       { name: "Lufthansa Technik AG", role: "MRO Provider" },
