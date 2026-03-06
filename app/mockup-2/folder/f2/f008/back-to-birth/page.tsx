@@ -228,11 +228,11 @@ const timelineEvents = [
 
 // Cross-check variables
 const crossCheckVariables = [
-  { label: "LLP Part Number", value: "340-301-301-0", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
-  { label: "LLP Serial Number", value: "PA877995", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
-  { label: "Engine Serial Number", value: "963481", status: "warning" as const, sources: ["LLP Status (963481)", "ARC (962858)"] },
-  { label: "LLP TSN", value: "30562", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
-  { label: "LLP CSN", value: "16501", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "LLP Part Number", value: "1864M90P04", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "LLP Serial Number", value: "TMT1AD99", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "Engine Serial Number", value: "890434", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "TSN", value: "18734", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "CSN", value: "11962", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
 ]
 
 function CrossCheckStatus({ status }: { status: "match" | "warning" | "missing" }) {
