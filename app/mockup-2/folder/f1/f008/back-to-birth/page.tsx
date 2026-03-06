@@ -32,18 +32,19 @@ const timelineEvents = [
   {
     id: "operational-history",
     title: "Operational History – ON / OFF Log",
-    date: "2 Feb 2022",
+    date: "Date Unknown",
+    verifiedDate: "20 Aug 2012",
     category: "Maintenance",
-    dotColor: "bg-emerald-500",
-    description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation.",
+    dotColor: "bg-red-500",
+    description: "Complete installation and removal history tracking the LLP through all engine installations with time/cycle accumulation. Data discrepancy detected.",
     documents: 1,
-    status: "verified" as const,
-    statusLabel: "Verified",
+    status: "flagged" as const,
+    statusLabel: "AI Findings",
     viewerLink: "/mockup-2/folder/f1/f008/viewer",
     imagePreview: "/documents/magellan-llp-history.jpg",
     keyData: [
-      { label: "LLP Part Number", value: "340-301-301-0", highlight: true },
-      { label: "LLP Serial Number", value: "PA877995", highlight: true },
+      { label: "LLP Part Number", value: "340-301-301-0", highlight: true, status: "discrepancy" },
+      { label: "LLP Serial Number", value: "PA877995", highlight: true, status: "discrepancy" },
       { label: "Engine Serial Number", value: "963481", highlight: true },
       { label: "Engine Model", value: "CFM56-7B26E", highlight: true },
       { label: "LLP TSN at Removal", value: "30562", highlight: true },
@@ -247,7 +248,8 @@ export default function F1EngineRecordsPage() {
         ...event,
         status: "verified" as const,
         statusLabel: "Verified",
-        dotColor: "bg-emerald-500"
+        dotColor: "bg-emerald-500",
+        date: (event as any).verifiedDate || event.date
       }
     }
     return event
@@ -332,7 +334,10 @@ export default function F1EngineRecordsPage() {
               <h1 className="text-2xl font-bold text-slate-900">
                 Back-to-Birth Records
               </h1>
-              <p className="text-slate-600 mt-1">LLP Traceability Timeline</p>
+              <div className="flex items-center gap-3 mt-1">
+                <p className="text-slate-600">LLP Traceability Timeline</p>
+                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Documents ingested: 6th March 2026</span>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
@@ -346,6 +351,18 @@ export default function F1EngineRecordsPage() {
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">Nomenclature:</span>
                 <span className="text-lg font-bold text-sky-900">DISK, LPT STG 4</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">First installation:</span>
+                <span className="text-lg font-bold text-sky-900">6/3/2020</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">Cycle date:</span>
+                <span className="text-lg font-bold text-sky-900">21/12/2021</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">TT:</span>
+                <span className="text-lg font-bold text-sky-900">6899 hours</span>
               </div>
             </div>
           </div>

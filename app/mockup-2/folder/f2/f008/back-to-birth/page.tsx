@@ -47,8 +47,8 @@ const timelineEvents = [
       { label: "Status", value: "OVERHAULED", highlight: true, status: "success" },
       { label: "Date", value: "27th July 2019", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
-      { label: "TSN", value: "18734", highlight: true },
-      { label: "CSN", value: "11962", highlight: true },
+      { label: "LLP TSN", value: "18734", highlight: true },
+      { label: "LLP CSN", value: "11962", highlight: true },
     ],
     parties: [
       { name: "Imran Ibrahim", role: "Authorized Signatory" },
@@ -68,13 +68,16 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Nomenclature", value: "AFT SHFT" },
-      { label: "Date", value: "29th May 2019", highlight: true },
-      { label: "Part Number", value: "1864M90P04", highlight: true, status: "discrepancy" },
-      { label: "Serial Number", value: "TMT1AD99", highlight: true, status: "discrepancy" },
-      { label: "TSN", value: "18734", highlight: true },
-      { label: "CSN", value: "11962", highlight: true },
+      { label: "Engine Model", value: "CFM56-7B26", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
+      { label: "Engine TSN", value: "43616", highlight: true },
+      { label: "Engine CSN", value: "24915", highlight: true },
+      { label: "LLP Part Number", value: "1864M90P04", highlight: true, status: "discrepancy" },
+      { label: "LLP Serial Number", value: "TMT1AD99", highlight: true, status: "discrepancy" },
+      { label: "LLP TSN", value: "18734:00", highlight: true },
+      { label: "LLP CSN", value: "11962", highlight: true },
+      { label: "Date", value: "29th MAY 2019", highlight: true },
+      { label: "Nomenclature", value: "SHAFT, REAR HPT" },
     ],
     parties: [
       { name: "GE Aviation", role: "MRO Provider" },
@@ -94,13 +97,15 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/llp-status",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Nomenclature", value: "AFT SHFT" },
-      { label: "Date", value: "9th May 2019", highlight: true },
-      { label: "Part Number", value: "1864M90P04", highlight: true },
-      { label: "Serial Number", value: "TMT1AD99", highlight: true },
-      { label: "TSN", value: "18734", highlight: true },
-      { label: "CSN", value: "11962", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
+      { label: "Engine TSN", value: "43616", highlight: true },
+      { label: "Engine CSN", value: "24915", highlight: true },
+      { label: "LLP Part Number", value: "1864M90P04", highlight: true },
+      { label: "LLP Serial Number", value: "TMT1AD99", highlight: true },
+      { label: "LLP TSN", value: "18734:00", highlight: true },
+      { label: "LLP CSN", value: "11962", highlight: true },
+      { label: "Date", value: "9th MAY 2019", highlight: true },
+      { label: "Nomenclature", value: "SHAFT, REAR HPT" },
     ],
     parties: [
       { name: "GE Aviation", role: "MRO Provider" },
@@ -120,12 +125,14 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/incident-clearance",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Date", value: "8th May 2019" },
-      { label: "Period", value: "Manufacture to 8th May 2019" },
+      { label: "Document Date", value: "29th July 2019", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
-      { label: "Engine Model", value: "CFM56-7B", highlight: true },
-      { label: "TSN", value: "18734", highlight: true },
-      { label: "CSN", value: "11962", highlight: true },
+      { label: "Engine Model", value: "CFM56-7BE", highlight: true },
+      { label: "Period", value: "2nd Dec 2016 to 8th May 2019", highlight: true },
+      { label: "Engine TSN", value: "43616", highlight: true },
+      { label: "Engine CSN", value: "24915", highlight: true },
+      { label: "Engine TSN", value: "37899", highlight: true },
+      { label: "Engine CSN", value: "20784", highlight: true },
     ],
     parties: [
       { name: "GE Aviation", role: "MRO Provider" },
@@ -145,10 +152,9 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/incident-clearance",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Date", value: "30th November 2016" },
-      { label: "Period", value: "Manufacture to 30th November 2016" },
+      { label: "Document Date", value: "30th Nov 2016", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
-      { label: "Engine Model", value: "CFM56-7B", highlight: true },
+      { label: "Engine Model", value: "CFM56-7BE", highlight: true },
     ],
     parties: [
       { name: "Lufthansa Technik AG", role: "MRO Provider" },
@@ -170,9 +176,15 @@ const timelineEvents = [
       { label: "LLP Part Number", value: "1864M90P04", highlight: true, status: "discrepancy" },
       { label: "LLP Serial Number", value: "TMT1AD99", highlight: true, status: "discrepancy" },
       { label: "Engine Serial Number", value: "890434", highlight: true },
-      { label: "Engine Model", value: "CFM56-7B", highlight: true },
-      { label: "TSN", value: "18734", highlight: true },
-      { label: "CSN", value: "11962", highlight: true },
+      { label: "Engine Model", value: "CFM56-7BE", highlight: true },
+      { label: "At 1st removal LLP TSN", value: "13028", highlight: true },
+      { label: "At 1st removal LLP CSN", value: "7833", highlight: true },
+      { label: "At 1st removal Engine TSN", value: "37910", highlight: true },
+      { label: "At 1st removal Engine CSN", value: "20736", highlight: true },
+      { label: "At Installation LLP TSN", value: "0", highlight: true },
+      { label: "At Installation LLP CSN", value: "0", highlight: true },
+      { label: "At Installation Engine TSN", value: "24882", highlight: true },
+      { label: "At Installation Engine CSN", value: "12953", highlight: true },
     ],
     parties: [
       { name: "GE Aviation Engine Services", role: "MRO Provider" },
@@ -191,10 +203,15 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Date", value: "20th August 2010", highlight: true },
       { label: "Part Number", value: "1864M90P04", highlight: true },
       { label: "Serial Number", value: "TMT1AD99", highlight: true },
+      { label: "LLP TSN", value: "0", highlight: true },
+      { label: "LLP CSN", value: "0", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
+      { label: "Engine Model", value: "CFM56-7BE", highlight: true },
+      { label: "Engine TSN", value: "24882", highlight: true },
+      { label: "Engine CSN", value: "12953", highlight: true },
+      { label: "Date", value: "20th Aug 2010", highlight: true },
     ],
     parties: [
       { name: "Lufthansa Technik AG", role: "MRO Provider" },
@@ -213,12 +230,10 @@ const timelineEvents = [
     viewerLink: "/mockup-2/folder/f2/f008/viewer/birth-record",
     imagePreview: "/documents/f2-release-certificate.jpg",
     keyData: [
-      { label: "Nomenclature", value: "AFT SHFT" },
       { label: "Part Number", value: "1864M90P04", highlight: true },
       { label: "Serial Number", value: "TMT1AD99", highlight: true },
-      { label: "Manufacturer", value: "GE Aviation" },
-      { label: "Manufacturing Date", value: "29 Dec 2008" },
-      { label: "Manufacturing Location", value: "USA" },
+      { label: "Status", value: "Manufactured", highlight: true },
+      { label: "Date", value: "29th Dec 2008", highlight: true },
     ],
     parties: [
       { name: "GE Aviation", role: "Manufacturer" },
@@ -228,11 +243,11 @@ const timelineEvents = [
 
 // Cross-check variables
 const crossCheckVariables = [
-  { label: "LLP Part Number", value: "340-301-301-0", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
-  { label: "LLP Serial Number", value: "PA877995", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
-  { label: "Engine Serial Number", value: "963481", status: "warning" as const, sources: ["LLP Status (963481)", "ARC (962858)"] },
-  { label: "LLP TSN", value: "30562", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
-  { label: "LLP CSN", value: "16501", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "LLP Part Number", value: "1864M90P04", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "LLP Serial Number", value: "TMT1AD99", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "Engine Serial Number", value: "890434", status: "match" as const, sources: ["Birth Record", "LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "TSN", value: "18734", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
+  { label: "CSN", value: "11962", status: "match" as const, sources: ["LLP Status", "ARC", "ON/OFF Log"] },
 ]
 
 function CrossCheckStatus({ status }: { status: "match" | "warning" | "missing" }) {
@@ -415,20 +430,35 @@ export default function F2EngineRecordsPage() {
               <h1 className="text-2xl font-bold text-slate-900">
                 Back-to-Birth Records
               </h1>
-              <p className="text-slate-600 mt-1">LLP Traceability Timeline</p>
+              <div className="flex items-center gap-3 mt-1">
+                <p className="text-slate-600">LLP Traceability Timeline</p>
+                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Documents ingested: 6th March 2026</span>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">PN:</span>
-                <span className="text-lg font-bold text-sky-900 font-mono">340-301-301-0</span>
+                <span className="text-lg font-bold text-sky-900 font-mono">1864M90P04</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">SN:</span>
-                <span className="text-lg font-bold text-sky-900 font-mono">PA877995</span>
+                <span className="text-lg font-bold text-sky-900 font-mono">TMT1AD99</span>
               </div>
               <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
                 <span className="text-sm font-medium text-sky-700">Nomenclature:</span>
-                <span className="text-lg font-bold text-sky-900">DISK, LPT STG 4</span>
+                <span className="text-lg font-bold text-sky-900">SHAFT, REAR HPT</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">First installation:</span>
+                <span className="text-lg font-bold text-sky-900">29/12/2009</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">Cycle date:</span>
+                <span className="text-lg font-bold text-sky-900">29/12/2011</span>
+              </div>
+              <div className="flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-sky-700">TT:</span>
+                <span className="text-lg font-bold text-sky-900">5000 hours</span>
               </div>
             </div>
           </div>
