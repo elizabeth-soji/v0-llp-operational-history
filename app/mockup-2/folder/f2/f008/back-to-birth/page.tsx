@@ -47,7 +47,7 @@ const timelineEvents = [
       { label: "Status", value: "OVERHAULED", highlight: true, status: "success" },
       { label: "Date", value: "27th July 2019", highlight: true },
       { label: "Engine Serial Number", value: "890434", highlight: true },
-      { label: "TSN", value: "18734", highlight: true },
+      { label: "LLP TSN", value: "18734", highlight: true },
       { label: "CSN", value: "11962", highlight: true },
     ],
     parties: [
