@@ -50,7 +50,7 @@ const lineItems = [
     title: "ENGINE INSTALLATION - CFM56-5B SERIES ENGINE - INSTALLATION TO AIRCRAFT PYLON",
     mroReference: "2000803422",
     status: "Complete",
-    aiFindings: "Yes",
+    aiFindings: "No",
   },
   {
     id: "3",
