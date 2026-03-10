@@ -111,13 +111,13 @@ const lineItemsData: Record<string, {
 export default function LineItemDetailPage() {
   const params = useParams()
   const itemId = params.itemId as string
+  const lineItem = lineItemsData[itemId] || lineItemsData["05"]
+  
   const [selectedCheck, setSelectedCheck] = useState<"general" | "jobCards">("general")
   const [mroVerified, setMroVerified] = useState(false)
   const [showMroModal, setShowMroModal] = useState(false)
-  const [dfpReferences, setDfpReferences] = useState<string[]>([""])
+  const [dfpReferences, setDfpReferences] = useState<string[]>([lineItem.mroReference])
   const [nrcReferences, setNrcReferences] = useState<string[]>(["611"])
-
-  const lineItem = lineItemsData[itemId] || lineItemsData["05"]
   
   // First awaiting item (05) has handwritten MRO reference warning
   const hasHandwrittenWarning = itemId === "05" && !mroVerified
