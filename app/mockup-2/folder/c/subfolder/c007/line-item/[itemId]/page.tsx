@@ -17,8 +17,15 @@ import {
   Pencil,
   XCircle,
   Clock,
+  AlertTriangle,
+  Plus,
+  Trash2,
+  X,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Input } from "@/components/ui/input"
 
 // Line items data (same as parent page)
 const lineItemsData: Record<string, {
@@ -105,8 +112,15 @@ export default function LineItemDetailPage() {
   const params = useParams()
   const itemId = params.itemId as string
   const [selectedCheck, setSelectedCheck] = useState<"general" | "jobCards">("general")
+  const [mroVerified, setMroVerified] = useState(false)
+  const [showMroModal, setShowMroModal] = useState(false)
+  const [dfpReferences, setDfpReferences] = useState<string[]>([""])
+  const [nrcReferences, setNrcReferences] = useState<string[]>(["611"])
 
   const lineItem = lineItemsData[itemId] || lineItemsData["05"]
+  
+  // First awaiting item (05) has handwritten MRO reference warning
+  const hasHandwrittenWarning = itemId === "05" && !mroVerified
 
   const complianceChecks = [
     { id: "general", label: "General", status: "Failed" },
@@ -253,12 +267,33 @@ export default function LineItemDetailPage() {
 
           <div className="mt-4 grid grid-cols-4 gap-x-12 gap-y-4">
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">MRO References</div>
+              <div className={`text-sm font-medium mb-1 ${hasHandwrittenWarning ? "text-amber-600" : "text-slate-900"}`}>
+                MRO References
+              </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-slate-600">{lineItem.mroReference}</span>
+                <span className={`text-sm ${hasHandwrittenWarning ? "text-amber-600" : "text-slate-600"}`}>
+                  {lineItem.mroReference}
+                </span>
                 <button className="text-slate-400 hover:text-slate-600">
                   <Pencil className="h-3 w-3" />
                 </button>
+                {hasHandwrittenWarning && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={() => setShowMroModal(true)}
+                          className="text-amber-500 hover:text-amber-600"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-xs">
+                        <p>The MRO reference was found handwritten and should be verified</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
             </div>
             <div>
@@ -359,6 +394,105 @@ export default function LineItemDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* MRO References Modal */}
+      <Dialog open={showMroModal} onOpenChange={setShowMroModal}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-slate-900">Edit MRO References</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Update MRO DFP and NRC references for this line item.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-6 space-y-6">
+            {/* MRO DFP References */}
+            <div>
+              <label className="text-sm font-semibold text-slate-900 block mb-3">MRO DFP References</label>
+              {dfpReferences.map((ref, index) => (
+                <div key={index} className="flex items-center gap-2 mb-2">
+                  <Input
+                    value={ref}
+                    onChange={(e) => {
+                      const newRefs = [...dfpReferences]
+                      newRefs[index] = e.target.value
+                      setDfpReferences(newRefs)
+                    }}
+                    placeholder="Enter reference"
+                    className="flex-1 text-emerald-600 placeholder:text-emerald-400"
+                  />
+                  <button 
+                    onClick={() => {
+                      const newRefs = dfpReferences.filter((_, i) => i !== index)
+                      setDfpReferences(newRefs.length ? newRefs : [""])
+                    }}
+                    className="p-2 text-slate-400 hover:text-slate-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              <button 
+                onClick={() => setDfpReferences([...dfpReferences, ""])}
+                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-slate-900 mt-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Reference
+              </button>
+            </div>
+
+            {/* MRO NRC References */}
+            <div>
+              <label className="text-sm font-semibold text-slate-900 block mb-3">MRO NRC References</label>
+              {nrcReferences.map((ref, index) => (
+                <div key={index} className="flex items-center gap-2 mb-2">
+                  <Input
+                    value={ref}
+                    onChange={(e) => {
+                      const newRefs = [...nrcReferences]
+                      newRefs[index] = e.target.value
+                      setNrcReferences(newRefs)
+                    }}
+                    placeholder="Enter reference"
+                    className="flex-1"
+                  />
+                  <button 
+                    onClick={() => {
+                      const newRefs = nrcReferences.filter((_, i) => i !== index)
+                      setNrcReferences(newRefs.length ? newRefs : [""])
+                    }}
+                    className="p-2 text-slate-400 hover:text-slate-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              <button 
+                onClick={() => setNrcReferences([...nrcReferences, ""])}
+                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-slate-900 mt-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Reference
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+            <Button variant="outline" onClick={() => setShowMroModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                setMroVerified(true)
+                setShowMroModal(false)
+              }}
+              className="bg-[#7C9A92] hover:bg-[#6B8A82] text-white"
+            >
+              Verify and resolve
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
