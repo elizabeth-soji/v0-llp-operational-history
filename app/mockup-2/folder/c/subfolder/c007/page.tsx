@@ -21,9 +21,11 @@ import {
   Pencil
 } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function C007ServiceBulletinPage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [activeTab, setActiveTab] = useState<"line-items" | "removal">("line-items")
   const [currentPage, setCurrentPage] = useState(1)
@@ -568,9 +570,14 @@ export default function C007ServiceBulletinPage() {
                 {filteredItems.map((item, index) => (
                   <tr
                     key={item.id}
-                    className={`border-b border-slate-100 hover:bg-slate-50 cursor-pointer ${
-                      index % 2 === 0 ? "bg-white" : "bg-slate-50/50"
-                    }`}
+                    onClick={() => {
+                      if (item.status === "Awaiting") {
+                        router.push(`/mockup-2/folder/c/subfolder/c007/line-item/${item.item}`)
+                      }
+                    }}
+                    className={`border-b border-slate-100 hover:bg-slate-50 ${
+                      item.status === "Awaiting" ? "cursor-pointer" : "cursor-default"
+                    } ${index % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}
                   >
                     <td className="p-3 text-slate-700 max-w-[180px]">
                       <div className="truncate">{item.chapter}</div>
