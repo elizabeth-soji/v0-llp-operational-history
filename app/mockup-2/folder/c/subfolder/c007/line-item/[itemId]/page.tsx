@@ -277,22 +277,40 @@ export default function LineItemDetailPage() {
                 <button className="text-slate-400 hover:text-slate-600">
                   <Pencil className="h-3 w-3" />
                 </button>
-                {hasHandwrittenWarning && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          onClick={() => setShowMroModal(true)}
-                          className="text-amber-500 hover:text-amber-600"
-                        >
-                          <AlertTriangle className="h-4 w-4" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-xs">
-                        <p>The MRO reference was found handwritten and should be verified</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                {itemId === "05" && (
+                  hasHandwrittenWarning ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button 
+                            onClick={() => setShowMroModal(true)}
+                            className="text-amber-500 hover:text-amber-600"
+                          >
+                            <AlertTriangle className="h-4 w-4" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs">
+                          <p>The MRO reference was found handwritten and should be verified</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="text-emerald-500">
+                            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
+                              <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs">
+                          <p>MRO reference has been verified</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )
                 )}
               </div>
             </div>
