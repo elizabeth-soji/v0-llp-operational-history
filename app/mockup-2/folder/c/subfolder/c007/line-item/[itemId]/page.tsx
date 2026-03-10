@@ -281,7 +281,7 @@ export default function LineItemDetailPage() {
                         <TooltipTrigger asChild>
                           <button 
                             onClick={() => setShowMroModal(true)}
-                            className="text-amber-500 hover:text-amber-600"
+                            className="text-amber-500 hover:text-amber-600 cursor-pointer"
                           >
                             <AlertTriangle className="h-4 w-4" />
                           </button>
