@@ -39,8 +39,8 @@ const lineItems = [
     taskNo: "72-00-00-200-801",
     title: "ENGINE REMOVAL - CFM56-5B SERIES ENGINE - REMOVAL FROM AIRCRAFT PYLON",
     mroReference: "2000803421",
-    status: "Complete",
-    aiFindings: "No",
+    status: "Awaiting",
+    aiFindings: "Yes",
   },
   {
     id: "2",
@@ -137,6 +137,7 @@ const lineItems = [
 export default function EngineChangePage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<"line-items" | "removal">("line-items")
   const [currentPage, setCurrentPage] = useState(1)
   
@@ -464,9 +465,14 @@ export default function EngineChangePage() {
                 {filteredItems.map((item, index) => (
                   <tr
                     key={item.id}
-                    className={`border-b border-slate-100 hover:bg-slate-50 cursor-pointer ${
-                      index % 2 === 0 ? "bg-white" : "bg-slate-50/50"
-                    }`}
+                    onClick={() => {
+                      if (item.status === "Awaiting") {
+                        router.push(`/mockup-2/work-order/engine-change-1/line-item/${item.item}`)
+                      }
+                    }}
+                    className={`border-b border-slate-100 hover:bg-slate-50 ${
+                      item.status === "Awaiting" ? "cursor-pointer" : "cursor-default"
+                    } ${index % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}
                   >
                     <td className="p-3 text-slate-700 max-w-[140px]">
                       <div className="truncate">{item.chapter}</div>
