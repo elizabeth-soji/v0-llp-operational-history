@@ -272,7 +272,7 @@ export default function LineItemDetailPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className={`text-sm ${hasHandwrittenWarning ? "text-amber-600" : "text-slate-600"}`}>
-                  {lineItem.mroReference}
+                  {dfpReferences[0] || lineItem.mroReference}
                 </span>
                 {itemId === "05" && (
                   hasHandwrittenWarning ? (
