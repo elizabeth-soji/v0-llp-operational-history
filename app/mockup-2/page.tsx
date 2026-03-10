@@ -13,6 +13,12 @@ import {
   Upload,
   FolderOpen,
   Plus,
+  FileText,
+  Pencil,
+  BarChart3,
+  Brain,
+  Sparkles,
+  BookOpen,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -346,7 +352,53 @@ export default function Mockup2() {
   ]
 
   return (
-    <div className="flex flex-col bg-white min-h-screen">
+    <div className="flex bg-white min-h-screen">
+      {/* Sidebar */}
+      <div className="fixed left-0 top-0 h-full w-[200px] bg-white border-r border-slate-200 z-40">
+        <div className="p-4 border-b border-slate-200">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded bg-slate-900 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">S</span>
+            </div>
+            <span className="font-bold text-slate-900">SOJI</span>
+          </div>
+        </div>
+        <nav className="p-2 space-y-1">
+          <Link href="#" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
+            <Sparkles className="h-4 w-4" />
+            Ticket Explorer
+          </Link>
+          <Link href="/mockup-2" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-700 bg-emerald-50 rounded-lg font-medium">
+            <FolderOpen className="h-4 w-4 text-emerald-600" />
+            End of Lease Projects
+          </Link>
+          <Link href="#" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
+            <Pencil className="h-4 w-4" />
+            Maintenance Review
+          </Link>
+          <Link href="#" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
+            <BookOpen className="h-4 w-4" />
+            IATA Binder
+          </Link>
+        </nav>
+        <div className="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-200">
+          <Link href="#" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
+            <BarChart3 className="h-4 w-4" />
+            Statistics
+          </Link>
+          <Link href="#" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
+            <FileText className="h-4 w-4" />
+            Document Repository
+          </Link>
+          <Link href="#" className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
+            <Brain className="h-4 w-4" />
+            Domain Knowledge
+          </Link>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col ml-[200px]">
       {/* Top Navigation Bar */}
       <div className="h-16 border-b border-slate-200 bg-white px-6 flex items-center justify-between shadow-sm sticky top-0 z-10">
         <div className="flex items-center gap-4">
@@ -1471,6 +1523,7 @@ export default function Mockup2() {
           </div>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   )
 }
