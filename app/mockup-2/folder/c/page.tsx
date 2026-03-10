@@ -192,6 +192,7 @@ export default function FolderCPage() {
                       lastUpdate: "6 hours ago",
                       assignee: "Anna P.",
                       party: "MRO",
+                      link: "/mockup-2/folder/c/subfolder/c007",
                     },
                     {
                       code: "C 008",
