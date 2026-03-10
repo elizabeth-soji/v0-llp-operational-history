@@ -137,7 +137,6 @@ const lineItems = [
 export default function EngineChangePage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const router = useRouter()
   const [activeTab, setActiveTab] = useState<"line-items" | "removal">("line-items")
   const [currentPage, setCurrentPage] = useState(1)
   

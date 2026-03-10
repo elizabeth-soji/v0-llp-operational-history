@@ -1531,7 +1531,7 @@ export default function Mockup2() {
           </div>
         </DialogContent>
       </Dialog>
-      </div>
+    </div>
     </div>
   )
 }
