@@ -538,9 +538,12 @@ export default function F2EngineRecordsPage() {
                   )}
                   
                   {/* Timeline Entry */}
-                  <button
+                  <div
                     onClick={() => setSelectedEvent(event.id)}
-                    className={`w-full text-left mb-4 transition-all ${
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedEvent(event.id) }}
+                    className={`w-full text-left mb-4 transition-all cursor-pointer ${
                       selectedEvent === event.id ? "opacity-100" : "opacity-70 hover:opacity-100"
                     }`}
                   >
@@ -614,7 +617,7 @@ export default function F2EngineRecordsPage() {
                         </div>
                       </div>
                     </div>
-                  </button>
+                  </div>
                 </div>
               )})}
             
