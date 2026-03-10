@@ -274,12 +274,6 @@ export default function LineItemDetailPage() {
                 <span className={`text-sm ${hasHandwrittenWarning ? "text-amber-600" : "text-slate-600"}`}>
                   {lineItem.mroReference}
                 </span>
-                <button 
-                  onClick={() => setShowMroModal(true)}
-                  className="text-slate-400 hover:text-slate-600"
-                >
-                  <Pencil className="h-3 w-3" />
-                </button>
                 {itemId === "05" && (
                   hasHandwrittenWarning ? (
                     <TooltipProvider>
@@ -315,6 +309,12 @@ export default function LineItemDetailPage() {
                     </TooltipProvider>
                   )
                 )}
+                <button 
+                  onClick={() => setShowMroModal(true)}
+                  className="text-slate-400 hover:text-slate-600"
+                >
+                  <Pencil className="h-3 w-3" />
+                </button>
               </div>
             </div>
             <div>
