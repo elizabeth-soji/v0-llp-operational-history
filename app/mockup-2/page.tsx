@@ -656,7 +656,15 @@ export default function Mockup2() {
                 progress: 30,
               },
             ].map((wo, idx) => (
-              <Card key={idx} className="bg-white border-slate-200 hover:shadow-md transition-all cursor-pointer">
+              <Card 
+                key={idx} 
+                className="bg-white border-slate-200 hover:shadow-md transition-all cursor-pointer"
+                onClick={() => {
+                  if (wo.name === "Engine Change #1") {
+                    window.location.href = "/mockup-2/work-order/engine-change-1"
+                  }
+                }}
+              >
                 <CardContent className="p-3 space-y-3">
                   <div>
                     <div className="flex items-start justify-between mb-1">
