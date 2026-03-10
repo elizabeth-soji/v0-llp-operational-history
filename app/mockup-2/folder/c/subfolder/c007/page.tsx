@@ -261,17 +261,6 @@ export default function C007ServiceBulletinPage() {
             Domain Knowledge
           </Link>
         </div>
-        {/* User section */}
-        <div className="absolute bottom-20 left-0 right-0 px-4 py-3 border-t border-slate-200">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-medium">EC</div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-slate-900 truncate">Elizabeth Chesters</div>
-              <div className="text-xs text-slate-500 truncate">elizabeth@soji.ai</div>
-            </div>
-            <ChevronDown className="h-4 w-4 text-slate-400" />
-          </div>
-        </div>
       </div>
 
       {/* Main Content */}
