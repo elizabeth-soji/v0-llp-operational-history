@@ -631,11 +631,11 @@ export default function Mockup2() {
               {
                 number: "WO-2025-003",
                 name: "Landing Gear Overhaul",
-                status: "in-progress",
+                status: "completed",
                 startDate: "15-Oct-25",
                 completionDate: "10-Nov-25",
                 assignedTo: "MRO Team",
-                progress: 45,
+                progress: 100,
               },
               {
                 number: "WO-2025-004",
