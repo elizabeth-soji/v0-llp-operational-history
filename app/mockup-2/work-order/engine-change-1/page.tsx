@@ -40,7 +40,7 @@ const lineItems = [
     title: "ENGINE REMOVAL - CFM56-5B SERIES ENGINE - REMOVAL FROM AIRCRAFT PYLON",
     mroReference: "2000803421",
     status: "Awaiting",
-    aiFindings: "Yes",
+    aiFindings: "No",
   },
   {
     id: "2",
