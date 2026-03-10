@@ -437,7 +437,7 @@ export default function LineItemDetailPage() {
                       setDfpReferences(newRefs)
                     }}
                     placeholder="Enter reference"
-                    className="flex-1 text-emerald-600 placeholder:text-emerald-400"
+                    className="flex-1 text-slate-900"
                   />
                   <button 
                     onClick={() => {
