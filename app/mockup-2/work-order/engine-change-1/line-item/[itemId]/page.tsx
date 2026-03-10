@@ -22,7 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-// Line item data for engine removal
+// Line item data for engine tasks
 const lineItemData = {
   "01": {
     title: "ENGINE REMOVAL - CFM56-5B SERIES ENGINE - REMOVAL FROM AIRCRAFT PYLON",
@@ -34,61 +34,127 @@ const lineItemData = {
     references: "AMM 72-00-00, EMM CFM56-5B",
     applicableDocumentation: "SB CFM56-5B-72-0045, AD 2024-15-06",
   },
+  "02": {
+    title: "ENGINE INSTALLATION - CFM56-5B SERIES ENGINE - INSTALLATION TO AIRCRAFT PYLON",
+    chapter: "72 - Engine",
+    itemNo: "02",
+    status: "Complete",
+    mroReference: "2000803422",
+    taskNo: "72-00-00-200-802",
+    references: "AMM 72-00-00, EMM CFM56-5B",
+    applicableDocumentation: "SB CFM56-5B-72-0046, AD 2024-15-07",
+  },
 }
 
-// Compliance checks data with 7 checks
-const complianceChecks = {
-  general: {
-    status: "failed",
-    checks: [
-      {
-        id: "1",
-        title: "Line Item has Related Task Card",
-        description: "Line Items should be associated with a Task Card",
-        status: "passed",
-      },
-      {
-        id: "2",
-        title: "Non-Routine Line Item has Related Discrepancy Report",
-        description: "The Non-Routine Line Item is not associated with a Discrepancy Report.",
-        status: "failed",
-      },
-      {
-        id: "3",
-        title: "Service Bulletin Referenced but Not Found",
-        description: "Referenced service bulletin SB CFM56-5B-72-0045 could not be located in the document repository.",
-        status: "neutral",
-      },
-      {
-        id: "4",
-        title: "Engine Serial Number Matches Work Order",
-        description: "Engine serial number on line item matches the work order specification.",
-        status: "passed",
-      },
-      {
-        id: "5",
-        title: "Required Tooling Documented",
-        description: "All required special tooling has been documented for the task.",
-        status: "passed",
-      },
-    ],
+// Compliance checks data - different for each item
+const complianceChecksData = {
+  "01": {
+    general: {
+      status: "failed",
+      checks: [
+        {
+          id: "1",
+          title: "Line Item has Related Task Card",
+          description: "Line Items should be associated with a Task Card",
+          status: "passed",
+        },
+        {
+          id: "2",
+          title: "Non-Routine Line Item has Related Discrepancy Report",
+          description: "The Non-Routine Line Item is not associated with a Discrepancy Report.",
+          status: "failed",
+        },
+        {
+          id: "3",
+          title: "Service Bulletin Referenced but Not Found",
+          description: "Referenced service bulletin SB CFM56-5B-72-0045 could not be located in the document repository.",
+          status: "neutral",
+        },
+        {
+          id: "4",
+          title: "Engine Serial Number Matches Work Order",
+          description: "Engine serial number on line item matches the work order specification.",
+          status: "passed",
+        },
+        {
+          id: "5",
+          title: "Required Tooling Documented",
+          description: "All required special tooling has been documented for the task.",
+          status: "passed",
+        },
+      ],
+    },
+    discrepancyReports: {
+      status: "passed",
+      checks: [
+        {
+          id: "6",
+          title: "Discrepancy Report Properly Closed",
+          description: "All associated discrepancy reports have been properly closed and signed off.",
+          status: "passed",
+        },
+        {
+          id: "7",
+          title: "Corrective Action Documented",
+          description: "Corrective actions for all discrepancies have been documented.",
+          status: "passed",
+        },
+      ],
+    },
   },
-  discrepancyReports: {
-    status: "passed",
-    checks: [
-      {
-        id: "6",
-        title: "Discrepancy Report Properly Closed",
-        description: "All associated discrepancy reports have been properly closed and signed off.",
-        status: "passed",
-      },
-      {
-        id: "7",
-        title: "Corrective Action Documented",
-        description: "Corrective actions for all discrepancies have been documented.",
-        status: "passed",
-      },
-    ],
+  "02": {
+    general: {
+      status: "passed",
+      checks: [
+        {
+          id: "1",
+          title: "Line Item has Related Task Card",
+          description: "Line Items should be associated with a Task Card",
+          status: "passed",
+        },
+        {
+          id: "2",
+          title: "Service Bulletin Referenced but Not Found",
+          description: "Referenced service bulletin SB CFM56-5B-72-0046 could not be located in the document repository.",
+          status: "neutral",
+        },
+        {
+          id: "3",
+          title: "Engine Serial Number Matches Work Order",
+          description: "Engine serial number on line item matches the work order specification.",
+          status: "passed",
+        },
+        {
+          id: "4",
+          title: "Required Tooling Documented",
+          description: "All required special tooling has been documented for the task.",
+          status: "passed",
+        },
+        {
+          id: "5",
+          title: "Torque Values Verified",
+          description: "All engine mount torque values have been verified and documented.",
+          status: "passed",
+        },
+      ],
+    },
+    discrepancyReports: {
+      status: "passed",
+      checks: [
+        {
+          id: "6",
+          title: "Discrepancy Report Properly Closed",
+          description: "All associated discrepancy reports have been properly closed and signed off.",
+          status: "passed",
+        },
+        {
+          id: "7",
+          title: "Corrective Action Documented",
+          description: "Corrective actions for all discrepancies have been documented.",
+          status: "passed",
+        },
+      ],
+    },
   },
 }
 
@@ -98,6 +164,7 @@ export default function EngineChangeLineItemPage() {
   const [selectedCheck, setSelectedCheck] = useState<"general" | "discrepancyReports">("general")
 
   const lineItem = lineItemData[itemId as keyof typeof lineItemData] || lineItemData["01"]
+  const complianceChecks = complianceChecksData[itemId as keyof typeof complianceChecksData] || complianceChecksData["01"]
   const currentChecks = complianceChecks[selectedCheck]
 
   const getCheckStatusIcon = (status: string) => {

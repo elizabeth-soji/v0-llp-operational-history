@@ -50,7 +50,7 @@ const lineItems = [
     title: "ENGINE INSTALLATION - CFM56-5B SERIES ENGINE - INSTALLATION TO AIRCRAFT PYLON",
     mroReference: "2000803422",
     status: "Complete",
-    aiFindings: "No",
+    aiFindings: "Yes",
   },
   {
     id: "3",
@@ -465,12 +465,12 @@ export default function EngineChangePage() {
                   <tr
                     key={item.id}
                     onClick={() => {
-                      if (item.status === "Awaiting") {
+                      if (item.status === "Awaiting" || item.item === "02") {
                         router.push(`/mockup-2/work-order/engine-change-1/line-item/${item.item}`)
                       }
                     }}
                     className={`border-b border-slate-100 hover:bg-slate-50 ${
-                      item.status === "Awaiting" ? "cursor-pointer" : "cursor-default"
+                      item.status === "Awaiting" || item.item === "02" ? "cursor-pointer" : "cursor-default"
                     } ${index % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}
                   >
                     <td className="p-3 text-slate-700 max-w-[140px]">
