@@ -178,7 +178,7 @@ export default function EngineChangeLineItemPage() {
   const [mroDfpReferences, setMroDfpReferences] = useState<string[]>([lineItem.mroReference])
   const [mroNrcReferences, setMroNrcReferences] = useState<string[]>([""])
   
-  const hasHandwrittenMroWarning = !mroVerified
+  const hasHandwrittenMroWarning = itemId === "01" && !mroVerified
   const hasHandwrittenTaskNoWarning = itemId === "01" && !taskNoVerified
   const complianceChecks = complianceChecksData[itemId as keyof typeof complianceChecksData] || complianceChecksData["01"]
   const currentChecks = complianceChecks[selectedCheck]
