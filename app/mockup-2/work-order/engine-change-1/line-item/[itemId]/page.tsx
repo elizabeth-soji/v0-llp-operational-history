@@ -168,9 +168,11 @@ export default function EngineChangeLineItemPage() {
   const [selectedCheck, setSelectedCheck] = useState<"general" | "discrepancyReports">("general")
   const [taskNoVerified, setTaskNoVerified] = useState(false)
   const [showTaskNoModal, setShowTaskNoModal] = useState(false)
+  const [showMroModal, setShowMroModal] = useState(false)
 
   const lineItem = lineItemData[itemId as keyof typeof lineItemData] || lineItemData["01"]
   const [taskNoValue, setTaskNoValue] = useState(lineItem.taskNo)
+  const [mroValue, setMroValue] = useState(lineItem.mroReference)
   const complianceChecks = complianceChecksData[itemId as keyof typeof complianceChecksData] || complianceChecksData["01"]
   const currentChecks = complianceChecks[selectedCheck]
 
@@ -296,8 +298,11 @@ export default function EngineChangeLineItemPage() {
             <div>
               <div className="text-sm font-medium text-slate-900 mb-1">MRO References</div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-slate-600">{lineItem.mroReference}</span>
-                <button className="text-slate-400 hover:text-slate-600">
+                <span className="text-sm text-slate-600">{mroValue}</span>
+                <button 
+                  onClick={() => setShowMroModal(true)}
+                  className="text-slate-400 hover:text-slate-600"
+                >
                   <Pencil className="h-3 w-3" />
                 </button>
               </div>
@@ -482,6 +487,40 @@ export default function EngineChangeLineItemPage() {
               className="bg-[#7C9A92] hover:bg-[#6B8A82] text-white"
             >
               Verify and resolve
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* MRO References Edit Modal */}
+      <Dialog open={showMroModal} onOpenChange={setShowMroModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-slate-900">Edit MRO References</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Update the MRO reference for this line item.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-6">
+            <label className="text-sm font-semibold text-slate-900 block mb-3">MRO Reference</label>
+            <Input
+              value={mroValue}
+              onChange={(e) => setMroValue(e.target.value)}
+              placeholder="Enter MRO Reference"
+              className="text-slate-900"
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+            <Button variant="outline" onClick={() => setShowMroModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => setShowMroModal(false)}
+              className="bg-[#7C9A92] hover:bg-[#6B8A82] text-white"
+            >
+              Save
             </Button>
           </div>
         </DialogContent>
