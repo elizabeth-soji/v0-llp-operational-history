@@ -19,6 +19,7 @@ import {
   XCircle,
   MinusCircle,
   AlertTriangle,
+  Info,
   Plus,
   Trash2,
 } from "lucide-react"
@@ -314,7 +315,7 @@ export default function EngineChangeLineItemPage() {
                             onClick={() => setShowMroModal(true)}
                             className="text-amber-500 hover:text-amber-600 cursor-pointer"
                           >
-                            <AlertTriangle className="h-4 w-4" />
+                            <Info className="h-4 w-4" />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent side="top" className="max-w-xs">
