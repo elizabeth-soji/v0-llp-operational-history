@@ -301,7 +301,7 @@ export default function EngineChangeLineItemPage() {
                 <span className="text-sm text-slate-600">{mroValue}</span>
                 <button 
                   onClick={() => setShowMroModal(true)}
-                  className="text-slate-400 hover:text-slate-600"
+                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
                 >
                   <Pencil className="h-3 w-3" />
                 </button>
@@ -346,7 +346,7 @@ export default function EngineChangeLineItemPage() {
                 )}
                 <button 
                   onClick={() => setShowTaskNoModal(true)}
-                  className="text-slate-400 hover:text-slate-600"
+                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
                 >
                   <Pencil className="h-3 w-3" />
                 </button>
