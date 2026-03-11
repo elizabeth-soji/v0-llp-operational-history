@@ -599,7 +599,7 @@ export default function EngineChangeLineItemPage() {
                       setMroNrcReferences(newRefs)
                     }}
                     placeholder="Enter reference"
-                    className="flex-1 text-slate-900 placeholder:text-emerald-500"
+                    className="flex-1 text-slate-900 placeholder:text-slate-400"
                   />
                   <button 
                     onClick={() => {
