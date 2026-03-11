@@ -366,11 +366,11 @@ export default function EngineChangeLineItemPage() {
                             onClick={() => setShowTaskNoModal(true)}
                             className="text-amber-500 hover:text-amber-600 cursor-pointer"
                           >
-                            <AlertTriangle className="h-4 w-4" />
+                            <Info className="h-4 w-4" />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent side="top" className="max-w-xs">
-                          <p>The Task No. was found handwritten and should be verified</p>
+                          <p>Task No. appears handwritten and may be less accurate. Please verify manually.</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
