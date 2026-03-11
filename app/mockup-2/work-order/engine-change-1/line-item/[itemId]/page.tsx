@@ -18,9 +18,11 @@ import {
   CheckCircle2,
   XCircle,
   MinusCircle,
+  AlertTriangle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 // Line item data for engine tasks
 const lineItemData = {
@@ -296,8 +298,25 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Task No.</div>
-              <div className="text-sm text-slate-600">{lineItem.taskNo}</div>
+              <div className="text-sm font-medium text-amber-600 mb-1">Task No.</div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-amber-600">{lineItem.taskNo}</span>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="text-amber-500 hover:text-amber-600 cursor-pointer">
+                        <AlertTriangle className="h-4 w-4" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p>The Task No. was found handwritten and should be verified</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <button className="text-slate-400 hover:text-slate-600">
+                  <Pencil className="h-3 w-3" />
+                </button>
+              </div>
             </div>
             <div>
               <div className="text-sm font-medium text-slate-900 mb-1">References</div>
