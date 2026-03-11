@@ -388,14 +388,12 @@ export default function EngineChangeLineItemPage() {
                     </TooltipProvider>
                   )
                 )}
-                {itemId === "01" && (
-                  <button 
-                    onClick={() => setShowTaskNoModal(true)}
-                    className="text-slate-400 hover:text-slate-600 cursor-pointer"
-                  >
-                    <Pencil className="h-3 w-3" />
-                  </button>
-                )}
+                <button 
+                  onClick={() => setShowTaskNoModal(true)}
+                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  <Pencil className="h-3 w-3" />
+                </button>
               </div>
             </div>
             <div>
