@@ -318,7 +318,7 @@ export default function EngineChangeLineItemPage() {
                           </button>
                         </TooltipTrigger>
                         <TooltipContent side="top" className="max-w-xs">
-                          <p>The MRO reference was found handwritten and should be verified</p>
+                          <p>MRO reference appears handwritten and may be less accurate. Please verify manually.</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
