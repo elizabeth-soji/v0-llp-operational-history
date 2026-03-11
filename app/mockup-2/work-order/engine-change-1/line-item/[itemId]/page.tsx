@@ -18,9 +18,15 @@ import {
   CheckCircle2,
   XCircle,
   MinusCircle,
+  AlertTriangle,
+  Plus,
+  Trash2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 
 // Line item data for engine tasks
 const lineItemData = {
@@ -162,8 +168,18 @@ export default function EngineChangeLineItemPage() {
   const params = useParams()
   const itemId = params.itemId as string
   const [selectedCheck, setSelectedCheck] = useState<"general" | "discrepancyReports">("general")
+  const [taskNoVerified, setTaskNoVerified] = useState(false)
+  const [showTaskNoModal, setShowTaskNoModal] = useState(false)
+  const [showMroModal, setShowMroModal] = useState(false)
+  const [mroVerified, setMroVerified] = useState(false)
 
   const lineItem = lineItemData[itemId as keyof typeof lineItemData] || lineItemData["01"]
+  const [taskNoValue, setTaskNoValue] = useState(lineItem.taskNo)
+  const [mroDfpReferences, setMroDfpReferences] = useState<string[]>([lineItem.mroReference])
+  const [mroNrcReferences, setMroNrcReferences] = useState<string[]>([""])
+  
+  const hasHandwrittenMroWarning = !mroVerified
+  const hasHandwrittenTaskNoWarning = itemId === "01" && !taskNoVerified
   const complianceChecks = complianceChecksData[itemId as keyof typeof complianceChecksData] || complianceChecksData["01"]
   const currentChecks = complianceChecks[selectedCheck]
 
@@ -287,17 +303,102 @@ export default function EngineChangeLineItemPage() {
 
           <div className="mt-4 grid grid-cols-4 gap-x-12 gap-y-4">
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">MRO References</div>
+              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>
+                MRO References
+                {hasHandwrittenMroWarning ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={() => setShowMroModal(true)}
+                          className="text-amber-500 hover:text-amber-600 cursor-pointer"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-xs">
+                        <p>The MRO reference was found handwritten and should be verified</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="text-emerald-500">
+                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
+                            <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-xs">
+                        <p>MRO reference has been verified</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-slate-600">{lineItem.mroReference}</span>
-                <button className="text-slate-400 hover:text-slate-600">
+                <span className={`text-sm ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-600"}`}>
+                  {mroDfpReferences[0] || lineItem.mroReference}
+                </span>
+                <button 
+                  onClick={() => setShowMroModal(true)}
+                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
                   <Pencil className="h-3 w-3" />
                 </button>
               </div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Task No.</div>
-              <div className="text-sm text-slate-600">{lineItem.taskNo}</div>
+              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>
+                Task No.
+                {itemId === "01" && (
+                  hasHandwrittenTaskNoWarning ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button 
+                            onClick={() => setShowTaskNoModal(true)}
+                            className="text-amber-500 hover:text-amber-600 cursor-pointer"
+                          >
+                            <AlertTriangle className="h-4 w-4" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs">
+                          <p>The Task No. was found handwritten and should be verified</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="text-emerald-500">
+                            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
+                              <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs">
+                          <p>Task No. has been verified</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`text-sm ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-600"}`}>{taskNoValue}</span>
+                <button 
+                  onClick={() => setShowTaskNoModal(true)}
+                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  <Pencil className="h-3 w-3" />
+                </button>
+              </div>
             </div>
             <div>
               <div className="text-sm font-medium text-slate-900 mb-1">References</div>
@@ -401,6 +502,142 @@ export default function EngineChangeLineItemPage() {
           </div>
         </div>
       </div>
+
+      {/* Task No. Edit Modal */}
+      <Dialog open={showTaskNoModal} onOpenChange={setShowTaskNoModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-slate-900">Edit Task No.</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Update the Task No. for this line item.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-6">
+            <label className="text-sm font-semibold text-slate-900 block mb-3">Task No.</label>
+            <Input
+              value={taskNoValue}
+              onChange={(e) => setTaskNoValue(e.target.value)}
+              placeholder="Enter Task No."
+              className="text-slate-900"
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+            <Button variant="outline" onClick={() => setShowTaskNoModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                setTaskNoVerified(true)
+                setShowTaskNoModal(false)
+              }}
+              className="bg-[#7C9A92] hover:bg-[#6B8A82] text-white"
+            >
+              Verify and resolve
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* MRO References Edit Modal */}
+      <Dialog open={showMroModal} onOpenChange={setShowMroModal}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-slate-900">Edit MRO References</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Update MRO DFP and NRC references for this line item.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-6 space-y-6">
+            {/* MRO DFP References */}
+            <div>
+              <label className="text-sm font-semibold text-slate-900 block mb-3">MRO DFP References</label>
+              {mroDfpReferences.map((ref, index) => (
+                <div key={index} className="flex items-center gap-2 mb-2">
+                  <Input
+                    value={ref}
+                    onChange={(e) => {
+                      const newRefs = [...mroDfpReferences]
+                      newRefs[index] = e.target.value
+                      setMroDfpReferences(newRefs)
+                    }}
+                    placeholder="Enter reference"
+                    className="flex-1 text-slate-900"
+                  />
+                  <button 
+                    onClick={() => {
+                      const newRefs = mroDfpReferences.filter((_, i) => i !== index)
+                      setMroDfpReferences(newRefs.length ? newRefs : [""])
+                    }}
+                    className="p-2 text-slate-400 hover:text-slate-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              <button 
+                onClick={() => setMroDfpReferences([...mroDfpReferences, ""])}
+                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-slate-900 mt-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Reference
+              </button>
+            </div>
+
+            {/* MRO NRC References */}
+            <div>
+              <label className="text-sm font-semibold text-slate-900 block mb-3">MRO NRC References</label>
+              {mroNrcReferences.map((ref, index) => (
+                <div key={index} className="flex items-center gap-2 mb-2">
+                  <Input
+                    value={ref}
+                    onChange={(e) => {
+                      const newRefs = [...mroNrcReferences]
+                      newRefs[index] = e.target.value
+                      setMroNrcReferences(newRefs)
+                    }}
+                    placeholder="Enter reference"
+                    className="flex-1 text-slate-900 placeholder:text-slate-400"
+                  />
+                  <button 
+                    onClick={() => {
+                      const newRefs = mroNrcReferences.filter((_, i) => i !== index)
+                      setMroNrcReferences(newRefs.length ? newRefs : [""])
+                    }}
+                    className="p-2 text-slate-400 hover:text-slate-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              <button 
+                onClick={() => setMroNrcReferences([...mroNrcReferences, ""])}
+                className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-slate-900 mt-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Reference
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+            <Button variant="outline" onClick={() => setShowMroModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                setMroVerified(true)
+                setShowMroModal(false)
+              }}
+              className="bg-[#7C9A92] hover:bg-[#6B8A82] text-white"
+            >
+              Verify
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
