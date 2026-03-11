@@ -179,6 +179,7 @@ export default function EngineChangeLineItemPage() {
   const [mroNrcReferences, setMroNrcReferences] = useState<string[]>([""])
   
   const hasHandwrittenMroWarning = !mroVerified
+  const hasHandwrittenTaskNoWarning = itemId === "01" && !taskNoVerified
   const complianceChecks = complianceChecksData[itemId as keyof typeof complianceChecksData] || complianceChecksData["01"]
   const currentChecks = complianceChecks[selectedCheck]
 
@@ -349,48 +350,52 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className={`text-sm font-medium mb-1 ${taskNoVerified ? "text-slate-900" : "text-amber-600"}`}>Task No.</div>
+              <div className={`text-sm font-medium mb-1 ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>Task No.</div>
               <div className="flex items-center gap-2">
-                <span className={`text-sm ${taskNoVerified ? "text-slate-600" : "text-amber-600"}`}>{taskNoValue}</span>
-                {taskNoVerified ? (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="text-emerald-500">
-                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
-                            <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-xs">
-                        <p>Task No. has been verified</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          onClick={() => setShowTaskNoModal(true)}
-                          className="text-amber-500 hover:text-amber-600 cursor-pointer"
-                        >
-                          <AlertTriangle className="h-4 w-4" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-xs">
-                        <p>The Task No. was found handwritten and should be verified</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <span className={`text-sm ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-600"}`}>{taskNoValue}</span>
+                {itemId === "01" && (
+                  hasHandwrittenTaskNoWarning ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button 
+                            onClick={() => setShowTaskNoModal(true)}
+                            className="text-amber-500 hover:text-amber-600 cursor-pointer"
+                          >
+                            <AlertTriangle className="h-4 w-4" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs">
+                          <p>The Task No. was found handwritten and should be verified</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="text-emerald-500">
+                            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
+                              <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs">
+                          <p>Task No. has been verified</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )
                 )}
-                <button 
-                  onClick={() => setShowTaskNoModal(true)}
-                  className="text-slate-400 hover:text-slate-600 cursor-pointer"
-                >
-                  <Pencil className="h-3 w-3" />
-                </button>
+                {itemId === "01" && (
+                  <button 
+                    onClick={() => setShowTaskNoModal(true)}
+                    className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </button>
+                )}
               </div>
             </div>
             <div>
