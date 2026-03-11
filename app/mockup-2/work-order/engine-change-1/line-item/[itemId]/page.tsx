@@ -23,6 +23,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 
 // Line item data for engine tasks
 const lineItemData = {
@@ -164,8 +166,11 @@ export default function EngineChangeLineItemPage() {
   const params = useParams()
   const itemId = params.itemId as string
   const [selectedCheck, setSelectedCheck] = useState<"general" | "discrepancyReports">("general")
+  const [taskNoVerified, setTaskNoVerified] = useState(false)
+  const [showTaskNoModal, setShowTaskNoModal] = useState(false)
 
   const lineItem = lineItemData[itemId as keyof typeof lineItemData] || lineItemData["01"]
+  const [taskNoValue, setTaskNoValue] = useState(lineItem.taskNo)
   const complianceChecks = complianceChecksData[itemId as keyof typeof complianceChecksData] || complianceChecksData["01"]
   const currentChecks = complianceChecks[selectedCheck]
 
@@ -298,22 +303,46 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className="text-sm font-medium text-amber-600 mb-1">Task No.</div>
+              <div className={`text-sm font-medium mb-1 ${taskNoVerified ? "text-slate-900" : "text-amber-600"}`}>Task No.</div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-amber-600">{lineItem.taskNo}</span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="text-amber-500 hover:text-amber-600 cursor-pointer">
-                        <AlertTriangle className="h-4 w-4" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="max-w-xs">
-                      <p>The Task No. was found handwritten and should be verified</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <button className="text-slate-400 hover:text-slate-600">
+                <span className={`text-sm ${taskNoVerified ? "text-slate-600" : "text-amber-600"}`}>{taskNoValue}</span>
+                {taskNoVerified ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="text-emerald-500">
+                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
+                            <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-xs">
+                        <p>Task No. has been verified</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={() => setShowTaskNoModal(true)}
+                          className="text-amber-500 hover:text-amber-600 cursor-pointer"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-xs">
+                        <p>The Task No. was found handwritten and should be verified</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+                <button 
+                  onClick={() => setShowTaskNoModal(true)}
+                  className="text-slate-400 hover:text-slate-600"
+                >
                   <Pencil className="h-3 w-3" />
                 </button>
               </div>
@@ -420,6 +449,43 @@ export default function EngineChangeLineItemPage() {
           </div>
         </div>
       </div>
+
+      {/* Task No. Edit Modal */}
+      <Dialog open={showTaskNoModal} onOpenChange={setShowTaskNoModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-slate-900">Edit Task No.</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Update the Task No. for this line item.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-6">
+            <label className="text-sm font-semibold text-slate-900 block mb-3">Task No.</label>
+            <Input
+              value={taskNoValue}
+              onChange={(e) => setTaskNoValue(e.target.value)}
+              placeholder="Enter Task No."
+              className="text-slate-900"
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+            <Button variant="outline" onClick={() => setShowTaskNoModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                setTaskNoVerified(true)
+                setShowTaskNoModal(false)
+              }}
+              className="bg-[#7C9A92] hover:bg-[#6B8A82] text-white"
+            >
+              Verify and resolve
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
