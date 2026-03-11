@@ -303,11 +303,8 @@ export default function EngineChangeLineItemPage() {
 
           <div className="mt-4 grid grid-cols-4 gap-x-12 gap-y-4">
             <div>
-              <div className={`text-sm font-medium mb-1 ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>MRO References</div>
-              <div className="flex items-center gap-2">
-                <span className={`text-sm ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-600"}`}>
-                  {mroDfpReferences[0] || lineItem.mroReference}
-                </span>
+              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>
+                MRO References
                 {hasHandwrittenMroWarning ? (
                   <TooltipProvider>
                     <Tooltip>
@@ -341,6 +338,11 @@ export default function EngineChangeLineItemPage() {
                     </Tooltip>
                   </TooltipProvider>
                 )}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`text-sm ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-600"}`}>
+                  {mroDfpReferences[0] || lineItem.mroReference}
+                </span>
                 <button 
                   onClick={() => setShowMroModal(true)}
                   className="text-slate-400 hover:text-slate-600 cursor-pointer"
@@ -350,9 +352,8 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className={`text-sm font-medium mb-1 ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>Task No.</div>
-              <div className="flex items-center gap-2">
-                <span className={`text-sm ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-600"}`}>{taskNoValue}</span>
+              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>
+                Task No.
                 {itemId === "01" && (
                   hasHandwrittenTaskNoWarning ? (
                     <TooltipProvider>
@@ -388,6 +389,9 @@ export default function EngineChangeLineItemPage() {
                     </TooltipProvider>
                   )
                 )}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`text-sm ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-600"}`}>{taskNoValue}</span>
                 <button 
                   onClick={() => setShowTaskNoModal(true)}
                   className="text-slate-400 hover:text-slate-600 cursor-pointer"
