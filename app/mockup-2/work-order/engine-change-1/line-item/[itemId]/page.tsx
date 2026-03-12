@@ -284,27 +284,28 @@ export default function EngineChangeLineItemPage() {
             </div>
           </div>
 
-          {/* Details Grid */}
-          <div className="mt-6 grid grid-cols-3 gap-x-12 gap-y-4">
+          {/* Details Grid - Row 1 */}
+          <div className="mt-8 grid grid-cols-[140px_100px_120px] gap-x-8">
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Chapter</div>
-              <div className="text-sm text-slate-600">{lineItem.chapter}</div>
+              <div className="text-sm font-semibold text-slate-900">Chapter</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.chapter}</div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Item No.</div>
-              <div className="text-sm text-slate-600">{lineItem.itemNo}</div>
+              <div className="text-sm font-semibold text-slate-900">Item No.</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.itemNo}</div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Status</div>
-              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+              <div className="text-sm font-semibold text-slate-900">Status</div>
+              <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 mt-0.5">
                 {lineItem.status}
               </Badge>
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-4 gap-x-12 gap-y-4">
+          {/* Details Grid - Row 2 */}
+          <div className="mt-6 grid grid-cols-[140px_140px_140px_auto] gap-x-8">
             <div>
-              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>
+              <div className={`flex items-center gap-1 text-sm font-semibold ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>
                 MRO References
                 {itemId === "01" && (
                   hasHandwrittenMroWarning ? (
@@ -342,7 +343,7 @@ export default function EngineChangeLineItemPage() {
                   )
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-0.5">
                 <span className={`text-sm ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-600"}`}>
                   {mroDfpReferences[0] || lineItem.mroReference}
                 </span>
@@ -355,7 +356,7 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>
+              <div className={`flex items-center gap-1 text-sm font-semibold ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>
                 Task No.
                 {itemId === "01" && (
                   hasHandwrittenTaskNoWarning ? (
@@ -393,7 +394,7 @@ export default function EngineChangeLineItemPage() {
                   )
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-0.5">
                 <span className={`text-sm ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-600"}`}>{taskNoValue}</span>
                 <button 
                   onClick={() => setShowTaskNoModal(true)}
@@ -404,12 +405,12 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">References</div>
-              <div className="text-sm text-slate-600">{lineItem.references}</div>
+              <div className="text-sm font-semibold text-slate-900">References</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.references}</div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Applicable Documentation</div>
-              <div className="text-sm text-slate-600">{lineItem.applicableDocumentation}</div>
+              <div className="text-sm font-semibold text-slate-900">Applicable Documentation</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.applicableDocumentation}</div>
             </div>
           </div>
         </div>
