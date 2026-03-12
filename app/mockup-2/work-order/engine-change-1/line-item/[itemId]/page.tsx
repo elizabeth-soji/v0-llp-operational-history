@@ -285,21 +285,34 @@ export default function EngineChangeLineItemPage() {
           </div>
 
           {/* Details Grid - Row 1 */}
-          <div className="mt-8 grid grid-cols-[140px_100px_120px] gap-x-8">
-            <div>
+          <div className="mt-8 flex items-end gap-x-8">
+            <div className="w-[140px]">
               <div className="text-sm font-semibold text-slate-900">Chapter</div>
               <div className="text-sm text-slate-600 mt-0.5">{lineItem.chapter}</div>
             </div>
-            <div>
+            <div className="w-[100px]">
               <div className="text-sm font-semibold text-slate-900">Item No.</div>
               <div className="text-sm text-slate-600 mt-0.5">{lineItem.itemNo}</div>
             </div>
-            <div>
+            <div className="w-[120px]">
               <div className="text-sm font-semibold text-slate-900">Status</div>
               <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 mt-0.5">
                 {lineItem.status}
               </Badge>
             </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="text-slate-700 border-slate-300 hover:bg-slate-50"
+              onClick={() => window.open('#', '_blank')}
+            >
+              View PDF
+              <svg className="h-4 w-4 ml-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </Button>
           </div>
 
           {/* Details Grid - Row 2 */}
