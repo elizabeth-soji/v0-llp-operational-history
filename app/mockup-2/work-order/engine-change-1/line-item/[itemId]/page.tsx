@@ -284,27 +284,41 @@ export default function EngineChangeLineItemPage() {
             </div>
           </div>
 
-          {/* Details Grid */}
-          <div className="mt-6 grid grid-cols-3 gap-x-12 gap-y-4">
-            <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Chapter</div>
-              <div className="text-sm text-slate-600">{lineItem.chapter}</div>
+          {/* Details Grid - Row 1 */}
+          <div className="mt-8 flex items-end gap-x-8">
+            <div className="w-[140px]">
+              <div className="text-sm font-semibold text-slate-900">Chapter</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.chapter}</div>
             </div>
-            <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Item No.</div>
-              <div className="text-sm text-slate-600">{lineItem.itemNo}</div>
+            <div className="w-[100px]">
+              <div className="text-sm font-semibold text-slate-900">Item No.</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.itemNo}</div>
             </div>
-            <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Status</div>
-              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+            <div className="w-[120px]">
+              <div className="text-sm font-semibold text-slate-900">Status</div>
+              <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 mt-0.5">
                 {lineItem.status}
               </Badge>
             </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="text-slate-700 border-slate-300 hover:bg-slate-50"
+              onClick={() => window.open('#', '_blank')}
+            >
+              View PDF
+              <svg className="h-4 w-4 ml-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </Button>
           </div>
 
-          <div className="mt-4 grid grid-cols-4 gap-x-12 gap-y-4">
+          {/* Details Grid - Row 2 */}
+          <div className="mt-6 grid grid-cols-[140px_140px_140px_auto] gap-x-8">
             <div>
-              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>
+              <div className={`flex items-center gap-1 text-sm font-semibold ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-900"}`}>
                 MRO References
                 {itemId === "01" && (
                   hasHandwrittenMroWarning ? (
@@ -342,7 +356,7 @@ export default function EngineChangeLineItemPage() {
                   )
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-0.5">
                 <span className={`text-sm ${hasHandwrittenMroWarning ? "text-amber-600" : "text-slate-600"}`}>
                   {mroDfpReferences[0] || lineItem.mroReference}
                 </span>
@@ -355,7 +369,7 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className={`flex items-center gap-1 text-sm font-medium mb-1 ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>
+              <div className={`flex items-center gap-1 text-sm font-semibold ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-900"}`}>
                 Task No.
                 {itemId === "01" && (
                   hasHandwrittenTaskNoWarning ? (
@@ -393,7 +407,7 @@ export default function EngineChangeLineItemPage() {
                   )
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-0.5">
                 <span className={`text-sm ${hasHandwrittenTaskNoWarning ? "text-amber-600" : "text-slate-600"}`}>{taskNoValue}</span>
                 <button 
                   onClick={() => setShowTaskNoModal(true)}
@@ -404,12 +418,12 @@ export default function EngineChangeLineItemPage() {
               </div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">References</div>
-              <div className="text-sm text-slate-600">{lineItem.references}</div>
+              <div className="text-sm font-semibold text-slate-900">References</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.references}</div>
             </div>
             <div>
-              <div className="text-sm font-medium text-slate-900 mb-1">Applicable Documentation</div>
-              <div className="text-sm text-slate-600">{lineItem.applicableDocumentation}</div>
+              <div className="text-sm font-semibold text-slate-900">Applicable Documentation</div>
+              <div className="text-sm text-slate-600 mt-0.5">{lineItem.applicableDocumentation}</div>
             </div>
           </div>
         </div>
